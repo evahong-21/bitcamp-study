@@ -1,0 +1,15 @@
+
+// Gradle 도구에 추가할 작업이 있으면 플러그인을 장착하라
+plugins {
+    id 'application' // 'java' 플러그인 + 애플리케이션 관련 작업 추가.
+    id 'eclipse' 
+}
+
+repositories {
+    mavenCentral() // https://repo.maven.apache.org/maven2 에서 다운로드
+}
+
+dependencies {
+    testImplementation 'junit:junit:4.13.2'
+    implementation 'com.google.guava:guava:30.1-jre'
+}
