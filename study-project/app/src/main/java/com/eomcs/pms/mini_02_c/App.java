@@ -54,6 +54,7 @@ public class App {
     System.out.println("----------------------------");
     System.out.println(numArr.length);
     System.out.println(numArr.toString());
+    System.out.println(numArr.hashCode());
   }
 
 }
