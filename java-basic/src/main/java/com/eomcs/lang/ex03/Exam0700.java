@@ -23,7 +23,7 @@ public class Exam0700 {
     System.out.println("Hello,\tworld!"); // 탭 공간을 추가시키는 문자
     System.out.println("Hello,\fworld!"); // 
     System.out.println("Hello,\"w\"orld!"); // " 문자를 출력시키는 문자
-    System.out.println("Hello,'w'orld!"); //"" 안에서 ' 문자는 그냥 적는다.
+    System.out.println("Hello,'w'orld!"); //"" 안에서 ' 문자는 그냥 적는다다.
     System.out.println('\''); // ' 문자를 출력시키는 문자
     System.out.println('"'); // '' 안에서 " 문자는 그냥 적는다.
     System.out.println("c:\\Users\\user\\git"); // \ 문자를 출력시키는 문자

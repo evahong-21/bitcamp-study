@@ -4,10 +4,11 @@ package com.eomcs.lang.ex03;
 
 public class Exam0320 {
   public static void main(String[] args) {
-    
+
     //## 8바이트 크기의 부동소수점
     //- 숫자 맨 뒤에 d 또는 D를 붙인다.
     //- 생략해도 된다.
+    // default가 double 이므로 뒤에 문자가 없으면 double이라고 간주.
     System.out.println(3.14);
     System.out.println(3.14d);
     System.out.println(3.14D);
