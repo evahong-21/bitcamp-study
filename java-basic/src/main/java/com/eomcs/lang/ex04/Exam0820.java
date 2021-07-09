@@ -4,7 +4,7 @@ package com.eomcs.lang.ex04;
 //
 public class Exam0820 {
   public static void main(String[] args) {
-    
+
     int a = 100;
 
     {
@@ -32,6 +32,7 @@ public class Exam0820 {
       // 다음과 같이 같은 이름의 변수를 선언할 수 있다.
       int b = 400;
     }
+    // System.out.println(b); 블록을 벗어났기 때문에 b를 호출할 수 없음. #####
   }
 }
 

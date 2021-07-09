@@ -19,7 +19,7 @@ public class Exam0520 {
     arr1[2] = 300;
     arr1[3] = 400;
     arr1[4] = 500;
-
+    System.out.println("종료");
 
     // 유효하지 않은 인덱스를 지정한다면?
     // - 실행 중에 오류가 발생한다.

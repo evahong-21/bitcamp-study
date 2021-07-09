@@ -2,7 +2,7 @@ package com.eomcs.lang.ex04;
 
 //# 형변환 - 명시적 형변환이 불가능한 경우 
 // 
-public class Exam0950 {
+public class Exam0951 {
   public static void main(String[] args) {
 
     // 1) 정수 메모리끼리 형변환이 가능하다.

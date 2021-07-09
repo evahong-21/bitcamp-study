@@ -32,15 +32,15 @@ public class Exam0510 {
     //int[] arr3 = new int[2147483647]; // 실행 오류 => VM의 배열 크기 제한을 초과
     // Exception in thread "main" java.lang.OutOfMemoryError: Requested array size exceeds VM limit
 
-    int[] arr3 = new int[2147483645]; // OK!
-    //int[] arr3 = new int[Integer.MAX_VALUE - 2]; // OK!
+    //int[] arr3 = new int[2147483645]; // OK!
+    int[] arr3 = new int[Integer.MAX_VALUE - 2]; // OK!
 
     // 실행 오류 발생!
     // => Exception in thread "main" java.lang.OutOfMemoryError: Java heap space
     // => JVM이 OS로부터 사용 허가를 받은 메모리 크기를 벗어났기 때문에 발생한 것이다.
-
+    System.out.println("완료!");
     // 해결책?
-    // => JVM을 실행할 때 최대 힙(heap) 메모리의 크기를 늘리면 된다.
+    // => JVM을 실행할 때 최대 힙(heap) 메모리의 크기를 늘리면 된다. > 대신 속도가 느려짐. ###
     // => JVM 실행 옵션에 다음을 추가하라!
     //        -Xmx메모리크기
     //    예) $ java -Xmx20000m ...

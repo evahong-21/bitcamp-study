@@ -32,7 +32,8 @@ public class Exam0521 {
      */
     // Java foreach문 (향상된 for문)
     //for (int 변수 : Array) {
-    //  for문은 Array.length만큼 반복하면서 변수는 한번의 턴이 돌때마다 Array[0]> Array[1] >,,, >Array[Array.length-1] 을 받아온다ㅏ.
+    //  for문은 Array.length만큼 반복하면서 변수는 한번의 턴이 돌때마다 
+    //Array[0]> Array[1] >,,, >Array[Array.length-1] 을 받아온다ㅏ.
 
 
     for (int item : arr1) {
