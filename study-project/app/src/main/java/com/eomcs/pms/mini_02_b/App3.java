@@ -39,13 +39,14 @@ public class App3 {
     /*
     방법 1.
     if (nowState==0) {  
-      System.out.println("\n상태: 신규");}
-    else if(nowState==1) { 
-      System.out.println("\n상태: 진행중");} 
-    else if(nowState==2) { 
-      System.out.println("\n상태: 완료");} 
-    else {  
-      System.out.println("\n잘못 입력하셨습니다.");}
+      System.out.println("\n상태: 신규");
+      } else if(nowState==1) { 
+      System.out.println("\n상태: 진행중");
+      } else if(nowState==2) { 
+      System.out.println("\n상태: 완료");
+      } else {  
+      System.out.println("\n잘못 입력하셨습니다.");
+      }
 
     //System.out.printf("\n상태: %%d$s",nowState+2,"신규","진행중","완료"); > 해결못함.
      */

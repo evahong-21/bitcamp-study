@@ -4,7 +4,8 @@ public class Exam0130_ {
 
   public static void main(String[] args) {
     // TODO Auto-generated method stub
-    java.util.Date today = new java.util.Date();
+
+    //java.util.Date today = new java.util.Date();
 
     /* 형식 : %t(입력)
      * 년 : Y(4자리표시), y(2자리표시)
@@ -13,7 +14,7 @@ public class Exam0130_ {
      * 요일 : A(Sunday), a(Sun)
      * 시간 : H(24시), I(12시), M(분), S(초), L(밀리초), N(나노초)
      */
-
+    /*
     System.out.println(today);
     System.out.printf("%1$tm %1$tM", today);
     System.out.printf("\n%1$tY %1$ty", today);
@@ -21,6 +22,16 @@ public class Exam0130_ {
     System.out.printf("\n%1$ts %1$tS", today);
     System.out.printf("\n%1$ta %1$tA", today);
     System.out.printf("\n%1$tH %1$tM", today);
+     */
+    //또 다른 시간 표시법.
+    long millis = System.currentTimeMillis();
+    System.out.println(millis); //millis는 arguments
+    java.util.Date d = new java.util.Date(millis);
+    System.out.println(d.toString());
+
+    java.sql.Date d1 = new java.sql.Date(millis);
+    System.out.println(d1);
+    //new java.sql.Time();
 
   }
 
