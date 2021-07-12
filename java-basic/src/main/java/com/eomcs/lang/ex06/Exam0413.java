@@ -15,6 +15,6 @@ public class Exam0413 {
       System.out.println(i);
       i++;
     }
-
+    System.out.println(i);
   }
 }

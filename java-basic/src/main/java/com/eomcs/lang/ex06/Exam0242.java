@@ -23,7 +23,7 @@ public class Exam0242 {
     // => 100, 200, "admin" 과 같이 값을 직접 지정할 필요가 없다.
     // => enum 변수에는 그 타입에 정의된 값만 저장할 수 있다.
     //
-    Level level = Level.MEMBER;
+    Level level = Level.MEMBER; 
 
     // 다음과 같이 switch나 case 값으로 enum 타입의 값이 올 수 있다.
     switch (level) {

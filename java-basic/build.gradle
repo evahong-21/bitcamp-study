@@ -3,6 +3,7 @@
 plugins {
     id 'application' // 'java' 플러그인 + 애플리케이션 관련 작업 추가.
     id 'eclipse' 
+    id 'java'
 }
 
 repositories {

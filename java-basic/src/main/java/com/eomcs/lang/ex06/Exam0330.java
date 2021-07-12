@@ -18,8 +18,8 @@ public class Exam0330 {
       }
 
       System.out.println();
-      x++;
-      y = 1;
+      x++; // x값은 하나씩 올림 
+      y = 1; // y값 초기화.
     }
     System.out.println("종료!!");
   }
