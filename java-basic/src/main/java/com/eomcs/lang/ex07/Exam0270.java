@@ -12,7 +12,7 @@ public class Exam0270 {
   //  static void m1(String[] names, String[] emails) {} // OK!
   //
   //    => 중간에 다른 타입이 온다 하더라도 안된다.
-  //  static void m1(String... names, int a, String... emails) {}// 컴파일 오류!
+  // static void m1(String... names, int a, String... emails) {}// 컴파일 오류!
   //  static void m1(String[] names, int a, String[] emails) {} // OK!
   //
   // 위의 메서드는 값을 구분할 수 있을 것 같은데?
@@ -29,7 +29,7 @@ public class Exam0270 {
   // 예) m2("aaaa");
   //  static void m2(String... names, String a) {} // 컴파일 오류!
   //  static void m2(boolean b, String... names, int a) {} // 컴파일 오류!
-  static void m2(int a, String... names) {} // OK!
+  static void m2(int a, boolean b, String... names) {} // OK!
 
   public static void main(String[] args) {
     // 컴파일 확인하라!

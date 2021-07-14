@@ -10,7 +10,7 @@ public class Exam0271 {
   static void x1(String[] names, String[] emails) {}
 
   // 배열 파리미터는 순서에 상관 없다.
-  static void x2(String[] names, int a) {}
+  static void x2(String[] names, int a, boolean b) {}
 
   public static void main(String[] args) {
     // 컴파일 확인하라!

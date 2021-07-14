@@ -29,7 +29,7 @@ public class Exam0230 {
     // => 리턴 값과 변수의 타입이 같아야 한다.
     String r = hello();
     System.out.println(r);
-
+    System.out.println(hello());
     // 메서드가 값을 리턴한다고 해서 반드시 그 값을 변수에 받아야 하는 것은 아니다.
     // 변수에 받을 지 여부는 호출하는 쪽의 마음이다.
     hello(); // 값을 받는 변수가 없으면 리턴 값은 버려진다.
