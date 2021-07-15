@@ -19,7 +19,7 @@ public class Exam0540 {
     }
 
     int sum = 0;
-    for (int i = 1; i < args.length; i++)
+    for (int i = 1; i < args.length; i++) // 첫번째는 이름이므로 두번째 값부터 받아야함.
       sum += Integer.parseInt(args[i]);
 
     System.out.printf("이름: %s\n", args[0]);

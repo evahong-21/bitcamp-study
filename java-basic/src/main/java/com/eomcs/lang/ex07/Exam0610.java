@@ -12,7 +12,8 @@ public class Exam0610 {
     //
 
     // JVM 아규먼트의 값 꺼내기
-    // => System.getProperty("이름");
+    // => System.getProperty("이름"); #### -D이름을 맞춰줘야함. 확실하게 값을 받을 수 있음
+    // 순서에 얽매이지 않음.
     //
     String value1 = System.getProperty("a");
     String value2 = System.getProperty("b");
