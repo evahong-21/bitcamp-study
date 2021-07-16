@@ -36,7 +36,6 @@ public class App0 {
         break;
       } else if (input.equals("/member/list")) {
         System.out.println("[회원 목록]");
-        sysout
         for (int i = 0; i < size; i++) {
           // 번호, 이름, 이메일, 전화, 가입일
           System.out.printf("%d, %s, %s, %s, %s\n", // 출력 형식 지정
