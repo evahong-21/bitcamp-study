@@ -1,30 +1,14 @@
 package com.eomcs.pms.mini_04_a;
 
-import java.sql.Date;
+import com.eomcs.pms.handler.Memberhandler;
+import com.eomcs.pms.handler.Projecthandler;
+import com.eomcs.pms.handler.Taskhandler;
+import com.eomcs.util.Prompt;
+
+// eomcs-java-project의 app-03-b App.java 파일 가져와서 시작.
+// app-04-a, app-04-b, app-04-c 순차적으로 해보기.
 
 public class App {
-
-
-
-  // 회원 정보
-  static final int LENGTH = 100;
-
-  static int size = 0;
-
-  // 프로젝트 정보
-  static final int PROJECT_LENGTH = 1000;
-
-  static int pSize = 0;
-
-  // 작업 정보
-  static final int TASK_LENGTH = 100;
-  static int[] tNo = new int[TASK_LENGTH];
-  static String[] tContent = new String[TASK_LENGTH];
-  static Date[] tDeadline = new Date[TASK_LENGTH];
-  static String[] tOwner = new String[TASK_LENGTH];
-  static int[] tStatus = new int[TASK_LENGTH];
-  static int tSize = 0;
-
   public static void main(String[] args) {
 
     while (true) {
@@ -36,22 +20,22 @@ public class App {
       } else if (input.equals("/member/add")) {
         // 메서드로 분리한 코드를 실행하기(메서드 호출)
         // => 메서드명();
-        addMember();
+        Memberhandler.add();
 
       } else if (input.equals("/member/list")) {
-        listMembers();
+        Memberhandler.list();
 
       }  else if (input.equals("/project/add")) {
-        addProject();
+        Projecthandler.add();
 
       }  else if (input.equals("/project/list")) {
-        listProjects();
+        Projecthandler.list();
 
       }  else if (input.equals("/task/add")) {
-        addTask();
+        Taskhandler.add();
 
       }  else if (input.equals("/task/list")) {
-        listTasks();
+        Taskhandler.list();
 
       } else {
         System.out.println("실행할 수 없는 명령입니다.");
@@ -59,11 +43,8 @@ public class App {
       System.out.println();
     }
 
-    Prompt.keyboardScan.close();
+    Prompt.close();
   }
-
-
-
 
 
 }
