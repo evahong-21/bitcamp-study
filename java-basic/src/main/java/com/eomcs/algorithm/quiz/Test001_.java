@@ -11,7 +11,6 @@ public class Test001_ {
         count++;
       }
       value/=10;
-
     }
     return count;
   }

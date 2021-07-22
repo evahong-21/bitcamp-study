@@ -1,5 +1,6 @@
 package com.eomcs.eomcs.pms.handler;
 
+import java.sql.Date;
 import com.eomcs.eomcs.pms.domain.Project;
 import com.eomcs.eomcs.util.Prompt;
 
@@ -63,6 +64,95 @@ public class ProjectHandler {
           this.projects[i].endDate, 
           this.projects[i].owner,
           this.projects[i].members);
+    }
+  }
+
+  public void detail() {
+    System.out.println("[프로젝트 상세보기]");
+    Project project=null;
+    int no = Prompt.inputInt("번호? ");
+    for (int i=0; i<this.size; i++) {
+      if (this.projects[i].no == no) {
+        project = this.projects[i];
+        break;
+      }
+    }
+    if (project==null) {
+      System.out.println("해당 번호의 프로젝트가 없습니다.");
+      return;
+    }
+    System.out.printf("제목: %s\n",project.no);
+    System.out.printf("이름: %s\n",project.title);
+    System.out.printf("이메일: %s\n",project.content);
+    System.out.printf("암호: %s\n",project.startDate);
+    System.out.printf("사진: %s\n",project.endDate);
+    System.out.printf("전화: %s\n",project.owner);
+    System.out.printf("등록일: %s\n",project.members);
+    System.out.printf("조회수: %s\n", ++project.viewCount);
+  }
+
+  public void update() {
+    // TODO Auto-generated method stub
+    System.out.println("[프로젝트 변경]");
+    int no = Prompt.inputInt("번호? ");
+    Project project = null;
+    for (int i=0; i<this.size; i++) {
+      if (this.projects[i].no == no) {
+        project = this.projects[i];
+        break;
+      }
+    }
+    if (project==null) {
+      System.out.println("해당 번호의 프로젝트가 없습니다.");
+      return;
+    }
+
+    String title = Prompt.inputString(String.format("제목(%s)?", project.title));
+    String content = Prompt.inputString(String.format("내용(%s)?", project.content));
+    Date startDate = Prompt.inputDate(String.format("시작일(%s)", project.startDate));
+    Date endDate = Prompt.inputDate(String.format("종료일(%s)", project.endDate));
+    String owner = Prompt.inputString(String.format("책임자(%s)?", project.owner));
+    String members = Prompt.inputString(String.format("팀원(%s)?", project.members));
+    String input = Prompt.inputString("정말 변경하시겠습니까?(y/N)");
+
+    if (input.equalsIgnoreCase("y")) {
+      project.title = title;
+      project.content = content;
+      project.startDate = startDate;
+      project.endDate = endDate;
+      project.owner = owner;
+      project.members = members;
+      System.out.println("프로젝트를 변경하였습니다.");
+    } else {
+      System.out.println("프로젝트 변경을 취소하였습니다.");
+    }
+  }
+
+  public void delete() {
+    // TODO Auto-generated method stub
+    System.out.println("[프로젝트 삭제]");
+    int no = Prompt.inputInt("번호? ");
+    int deleteNo = -1;
+    for (int i=0; i<this.size; i++) {
+      if (this.projects[i].no == no) {
+        deleteNo = i;
+        break;
+      }
+    }
+    if (deleteNo==-1) {
+      System.out.println("해당 번호의 프로젝트가 없습니다.");
+      return;
+    }    
+    String input = Prompt.inputString("정말 삭제하시겠습니까?(y/N)");
+    if (input.equalsIgnoreCase("y") ) {
+      for (int i = deleteNo+1; i<this.size; i++) {
+        this.projects[i-1] = this.projects[i]; 
+      }
+      this.projects[--this.size] = null;
+      System.out.println("프로젝트를 삭제하였습니다.");
+    } else {
+      System.out.println("프로젝트 삭제를 취소하였습니다.");
+      return;
     }
   }
 
