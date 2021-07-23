@@ -10,5 +10,4 @@ public class Task {
   public Date deadline;
   public String owner;
   public int status;
-  public int viewCount;
 }

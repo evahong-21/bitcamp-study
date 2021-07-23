@@ -12,5 +12,4 @@ public class Project {
   public Date endDate;
   public String owner;
   public String members;
-  public int viewCount;
 }
