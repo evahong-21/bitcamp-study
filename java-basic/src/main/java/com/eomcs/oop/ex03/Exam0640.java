@@ -8,7 +8,7 @@ public class Exam0640 {
 
     static void m() {}
 
-    // 클래스가 로딩될 때 스태틱 초기화 블록은 실행된다.
+    // 클래스가 최초에 로딩될 때 스태틱 초기화 블록은 실행된다.
     // 여러 개의 스태틱 블록이 있을 때, 컴파일러는 한 개의 블록으로 합친다.
     // - 바이트코드(Exam0640$A.class)를 확인해 보라.
     //
@@ -30,9 +30,11 @@ public class Exam0640 {
     // - 따라서 설계도가 없으면 즉시 설계도를 로딩할 것이다.
     //
     new A();
+    System.out.println("---------------------");
     new A();
+    System.out.println("---------------------");
     new A();
-
+    System.out.println("---------------------");
     System.out.println("종료!");
   }
 }
