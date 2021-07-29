@@ -10,6 +10,12 @@ public class A /*extends Object*/ {
     this.v1 = value;
     System.out.println("A(int) 생성자!");
   }
+
+  A() {
+
+  }
+
+
 }
 
 

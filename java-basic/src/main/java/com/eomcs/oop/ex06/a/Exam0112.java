@@ -11,7 +11,7 @@ public class Exam0112 {
     Sedan s = new Sedan();
     Truck t = new Truck();
 
-    Bike b2 = null;
+    Bike b2 = null; // 선언만 하고 초기화가 안된 상태...?#####
 
     // 하위 클래스의 레퍼런스로 상위 클래스의 인스턴스를 가리킬 수 없다.
     // => 상위 클래스의 인스턴스에는 하위 클래스의 멤버가 없을 수 있기 때문이다.
@@ -20,7 +20,7 @@ public class Exam0112 {
     // 만약 위의 코드가 가능하다면,
     // 다음과 같이 Bike 레퍼런스로 Bike 인스턴스 변수를 사용하려 할 것이다.
     b2.engine = true;
-
+    b2.model = "타코";
     // 그러나, b2가 실제 가리키는 것은 Bike의 인스턴스가 아니기 때문에
     // Bike의 engine 변수를 사용할 수 없다.
     //
