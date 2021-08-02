@@ -5,6 +5,8 @@ class Patient {
   public static final int WOMAN = 1;
   public static final int MAN = 2;
 
+  // 추상화란? 
+  //데이터 : 멤버, 프로젝트, 테스크, 보드 / 업무 : 핸들러 
   String name;
   int age;
   int height;
