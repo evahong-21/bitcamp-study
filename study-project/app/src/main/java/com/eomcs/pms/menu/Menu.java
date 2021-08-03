@@ -1,11 +1,11 @@
 package com.eomcs.pms.menu;
 
-abstract class Menu {
+public abstract class Menu {
   String title;
 
-  Menu(String title) {
-
+  public Menu(String title) {
+    this.title = title;
   }
-  abstract void execute();
+  public abstract void execute();
 
 }

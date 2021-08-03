@@ -2,17 +2,17 @@ package com.eomcs.pms.menu;
 
 import com.eomcs.pms.handler.BoardHandler;
 
-public class BoardAddMenu extends Menu {
+public class BoardListMenu extends Menu {
   String title;
   BoardHandler boardHandler;
 
-  BoardAddMenu(BoardHandler boardHandler) {
-    super("등록");
+  BoardListMenu(BoardHandler boardHandler) {
+    super("목록");
     this.boardHandler = boardHandler;
   }
 
   @Override
   public void execute() {
-    boardHandler.add();
+    boardHandler.list();
   }
 }
