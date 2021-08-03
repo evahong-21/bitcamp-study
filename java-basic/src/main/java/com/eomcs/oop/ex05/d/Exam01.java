@@ -14,7 +14,7 @@ public class Exam01 {
     //          기존 기능에 문제가 발생할 가능성이 거의 없다.
     //       => 소스 코드의 유지보수가 쉽다.
     Sedan c = new Sedan("비트자동차", "티코", 5, true, true);
-
+    System.out.printf("%s,%s,%d,%s,%s", c.maker, c.model, c.capacity, c.sunroof, c.auto);
     // 이것이 상속이라는 문법이 등장한 이유이다.
     // => 즉 기존 코드의 수정을 최소화하면서 새 기능을 추가하는 방법!
     // => 기존 기능을 재작성하지 않고 다시 사용할 수 있게 만드는 문법이다.

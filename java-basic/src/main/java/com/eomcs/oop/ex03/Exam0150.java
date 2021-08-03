@@ -5,9 +5,9 @@ package com.eomcs.oop.ex03;
 public class Exam0150 {
 
   static class Student {
-    
+
     // 클래스 필드 = 스태틱 필드
-    // - 모든 인스턴스가 공유하는 값을 저장할 때는 클래스 변수를 사용한다.
+    // - 모든 인스턴스가 "공유"하는 값을 저장할 때는 클래스 변수를 사용한다.
     static int count; 
 
     // 인스턴스 필드
@@ -17,7 +17,7 @@ public class Exam0150 {
   }
 
   public static void main(String[] args) {
-    
+
     // 클래스 필드는 인스턴스를 생성할 필요 없이 클래스 이름으로 바로 사용한다.
     Student.count = 0;
 
@@ -25,22 +25,22 @@ public class Exam0150 {
     Student s1 = new Student();
     s1.name = "홍길동"; // 인스턴스 필드는 인스턴스의 주소(s1)가 있어야만 접근할 수 있다.
     s1.age = 10;
-    
+
     // 클래스 이름으로는 인스턴스 필드에 접근할 수 없다.
     // A.name = "홍길동"; // 컴파일 오류!
-    
+
     Student.count++;
 
     Student s2 = new Student();
     s2.name = "임꺽정";
     s2.age = 20;
-    
+
     Student.count++; // 이처럼 클래스 필드는 클래스 이름으로 사용하라!
 
     Student s3 = new Student();
     s3.name = "유관순";
     s3.age = 30;
-    
+
     Student.count++; // 이처럼 클래스 필드는 클래스 이름으로 사용하라!
 
     System.out.printf("%d, %s, %d\n", Student.count, s1.name, s1.age);

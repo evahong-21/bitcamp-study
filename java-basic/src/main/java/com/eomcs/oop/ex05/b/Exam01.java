@@ -16,6 +16,7 @@ public class Exam01 {
     //       => 쓰지도 않는 코드가 계속 누적되는 문제가 있다.
     //
     Car c1 = new Car("비트자동차", "티코", 5, true, true);
+    System.out.printf("%s,%s,%d,%s,%s", c1.maker, c1.model, c1.capacity, c1.sunroof, c1.auto);
 
 
 

@@ -35,8 +35,8 @@ public class Exam0140 {
     // 인스턴스 변수는 인스턴스를 만들 때 마다 생성된다.
     A p2 = new A(); // 새 v2 변수가 생성된다.
     p2.v2 = 300;
-
-    System.out.printf("A.v1=%d, p.v2=%d, p2.v2=%d\n", A.v1, p.v2, p2.v2);
+    //p2.v1 = 1; // static 변수는 인스턴스 만들때마다 생성되는게 아니라 하나가 고유의 값을 갖고있음.#####
+    System.out.printf("A.v1=%d, p.v2=%d, p2.v2=%d, p2.v1=%d\n", A.v1, p.v2, p2.v2, p2.v1);
   }
 }
 
