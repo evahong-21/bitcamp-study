@@ -74,10 +74,12 @@ public class MenuGroup extends Menu{
       } 
 
       if (menuNo==0 && this.prevMenuTitle.equals("이전 메뉴")) {
-        this.childs[menuNo].execute();
-      } else {
-        this.childs[--menuNo].execute();
-      }
+        //this.childs[menuNo].execute();
+        continue;
+      } 
+
+      this.childs[--menuNo].execute();
+
 
     }
   }
