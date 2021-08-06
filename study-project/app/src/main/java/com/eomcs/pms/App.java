@@ -4,128 +4,149 @@ import com.eomcs.pms.handler.BoardHandler;
 import com.eomcs.pms.handler.MemberHandler;
 import com.eomcs.pms.handler.ProjectHandler;
 import com.eomcs.pms.handler.TaskHandler;
-import com.eomcs.pms.menu.Menu;
-import com.eomcs.pms.menu.MenuGroup;
 import com.eomcs.util.Prompt;
 
 public class App {
-
-  BoardHandler boardHandler = new BoardHandler();
-  MemberHandler memberHandler = new MemberHandler();
-  ProjectHandler projectHandler = new ProjectHandler(memberHandler.getMemberList());
-  TaskHandler taskHandler = new TaskHandler(memberHandler.getMemberList());
+  static BoardHandler boardHandler = new BoardHandler();
+  static MemberHandler memberHandler = new MemberHandler();
+  static ProjectHandler projectHandler = new ProjectHandler(memberHandler);
+  static TaskHandler taskHandler = new TaskHandler(memberHandler);
 
   public static void main(String[] args) {
-    App app = new App();
-    app.service();
+
+    while (true) {
+      int mainNo = doMainMenu();
+      if(mainNo ==0) {
+        System.out.println("안녕!");
+        //input = "quit";
+        break;
+      } else if (mainNo == 1) {
+        doBoardMenu();
+      } else if (mainNo == 2) {
+        doMemberMenu();
+      } else if (mainNo == 3) {
+        doProjectMenu();
+      } else if (mainNo == 4) {
+        doTaskMenu();
+      } else {
+        System.out.println("입력값이 잘못되었습니다.\n");
+        continue;
+      }
+    } Prompt.close();
   }
 
-  void service() {
-    createMenu().execute();
-    Prompt.close();
+  private static void doBoardMenu() {
+    while (true) {
+      System.out.println("\n[메인/게시판]");
+      System.out.println("1. 등록");
+      System.out.println("2. 목록");
+      System.out.println("3. 상세보기");
+      System.out.println("4. 변경");
+      System.out.println("5. 삭제");
+      System.out.println("0. 이전메뉴");
+      int inputNo = Prompt.inputInt("게시판> ");
+      System.out.println();
+
+      switch (inputNo) {
+        case 0: return;
+        case 1: boardHandler.add(); break ;
+        case 2: boardHandler.list(); break ;
+        case 3: boardHandler.detail(); break ;
+        case 4: boardHandler.update(); break ;
+        case 5: boardHandler.delete(); break ;
+        default :
+          System.out.println("입력값이 잘못되었습니다.\n");
+          //continue BOARD_LOOP; 어쩌피 끝나서 while문으로 돌아감.
+      }
+    }
   }
 
-  Menu createMenu() {
-    MenuGroup mainMenuGroup = new MenuGroup("메인");
-    mainMenuGroup.setPrevMenuTitle("종료");
+  private static void doMemberMenu() {
+    while (true) {
+      System.out.println("\n[메인/회원]");
+      System.out.println("1. 등록");
+      System.out.println("2. 목록");
+      System.out.println("3. 상세보기");
+      System.out.println("4. 변경");
+      System.out.println("5. 삭제");
+      System.out.println("0. 이전메뉴");
+      int inputNo = Prompt.inputInt("회원> ");
+      System.out.println();
 
-    MenuGroup boardMenu = new MenuGroup("게시판");
-    mainMenuGroup.add(boardMenu);
+      switch (inputNo) {
+        case 0: return;
+        case 1: memberHandler.add(); break ;
+        case 2: memberHandler.list(); break ;
+        case 3: memberHandler.detail(); break ;
+        case 4: memberHandler.update(); break ;
+        case 5: memberHandler.delete(); break ;
+        default :
+          System.out.println("입력값이 잘못되었습니다.\n");
+          //continue BOARD_LOOP; 어쩌피 끝나서 while문으로 돌아감.
+      }
+    }
+  }
 
-    boardMenu.add(new Menu("등록") {
-      public void execute() {
-        boardHandler.add(); 
-      }});
-    boardMenu.add(new Menu("목록") {
-      public void execute() {
-        boardHandler.list(); 
-      }});
-    boardMenu.add(new Menu("상세보기") {
-      public void execute() {
-        boardHandler.detail(); 
-      }});
-    boardMenu.add(new Menu("변경") {
-      public void execute() {
-        boardHandler.update(); 
-      }});
-    boardMenu.add(new Menu("삭제") {
-      public void execute() {
-        boardHandler.delete(); 
-      }});
+  private static void doProjectMenu() {
+    while (true) {
+      System.out.println("\n[메인/프로젝트]");
+      System.out.println("1. 등록");
+      System.out.println("2. 목록");
+      System.out.println("3. 상세보기");
+      System.out.println("4. 변경");
+      System.out.println("5. 삭제");
+      System.out.println("0. 이전메뉴");
+      int inputNo = Prompt.inputInt("프로젝트> ");
+      System.out.println();
 
-    MenuGroup memberMenu = new MenuGroup("회원");
-    mainMenuGroup.add(memberMenu);
+      switch (inputNo) {
+        case 0: return;
+        case 1: projectHandler.add(); break ;
+        case 2: projectHandler.list(); break ;
+        case 3: projectHandler.detail(); break ;
+        case 4: projectHandler.update(); break ;
+        case 5: projectHandler.delete(); break ;
+        default :
+          System.out.println("입력값이 잘못되었습니다.\n");
+          //continue BOARD_LOOP; 어쩌피 끝나서 while문으로 돌아감.
+      }
+    }
+  }
+  private static void doTaskMenu() {
+    while (true) {
+      System.out.println("\n[메인/작업]");
+      System.out.println("1. 등록");
+      System.out.println("2. 목록");
+      System.out.println("3. 상세보기");
+      System.out.println("4. 변경");
+      System.out.println("5. 삭제");
+      System.out.println("0. 이전메뉴");
+      int inputNo = Prompt.inputInt("작업> ");
+      System.out.println();
 
-    memberMenu.add(new Menu("등록") {
-      public void execute() {
-        memberHandler.add(); 
-      }});
-    memberMenu.add(new Menu("목록") {
-      public void execute() {
-        memberHandler.list(); 
-      }});
-    memberMenu.add(new Menu("상세보기") {
-      public void execute() {
-        memberHandler.detail(); 
-      }});
-    memberMenu.add(new Menu("변경") {
-      public void execute() {
-        memberHandler.update(); 
-      }});
-    memberMenu.add(new Menu("삭제") {
-      public void execute() {
-        memberHandler.delete(); 
-      }});
+      switch (inputNo) {
+        case 0: return;
+        case 1: taskHandler.add(); break ;
+        case 2: taskHandler.list(); break ;
+        case 3: taskHandler.detail(); break ;
+        case 4: taskHandler.update(); break ;
+        case 5: taskHandler.delete(); break ;
+        default :
+          System.out.println("입력값이 잘못되었습니다.\n");
+          //continue BOARD_LOOP; 어쩌피 끝나서 while문으로 돌아감.
+      }
+    }
+  }
+  private static int doMainMenu() {
+    System.out.println("\n[메인]");
+    System.out.println("1. 게시판");
+    System.out.println("2. 회원");
+    System.out.println("3. 프로젝트");
+    System.out.println("4. 작업");
+    System.out.println("0. 종료");
+    return Prompt.inputInt("메인> ");
 
-    MenuGroup projectMenu = new MenuGroup("프로젝트");
-    mainMenuGroup.add(projectMenu);
 
-    projectMenu.add(new Menu("등록") {
-      public void execute() {
-        projectHandler.add(); 
-      }});
-    projectMenu.add(new Menu("목록") {
-      public void execute() {
-        projectHandler.list(); 
-      }});
-    projectMenu.add(new Menu("상세보기") {
-      public void execute() {
-        projectHandler.detail(); 
-      }});
-    projectMenu.add(new Menu("변경") {
-      public void execute() {
-        projectHandler.update(); 
-      }});
-    projectMenu.add(new Menu("삭제") {
-      public void execute() {
-        projectHandler.delete(); 
-      }});
-
-    MenuGroup taskMenu = new MenuGroup("작업");
-    mainMenuGroup.add(taskMenu);
-
-    taskMenu.add(new Menu("등록") {
-      public void execute() {
-        taskHandler.add(); 
-      }});
-    taskMenu.add(new Menu("목록") {
-      public void execute() {
-        taskHandler.list(); 
-      }});
-    taskMenu.add(new Menu("상세보기") {
-      public void execute() {
-        taskHandler.detail(); 
-      }});
-    taskMenu.add(new Menu("변경") {
-      public void execute() {
-        taskHandler.update(); 
-      }});
-    taskMenu.add(new Menu("삭제") {
-      public void execute() {
-        taskHandler.delete(); 
-      }});
-
-    return mainMenuGroup;
   }
 }
 

@@ -6,12 +6,15 @@ import com.eomcs.util.Prompt;
 
 public class ProjectHandler {
 
-  ProjectList2 projectList = new ProjectList2();
-  MemberList2 memberList;
+  MemberHandler memberHandler;
 
-  public ProjectHandler(MemberList2 memberList) {
-    this.memberList = memberList;
+  public ProjectHandler(MemberHandler memberHandler) {
+    this.memberHandler = memberHandler; 
   }
+
+  static final int MAX_LENGTH = 5;
+  Project[] projects = new Project[MAX_LENGTH];
+  int size = 0;
 
   public void add() {
     System.out.println("[프로젝트 등록]");
@@ -32,24 +35,20 @@ public class ProjectHandler {
 
     project.members = promptMembers("팀원?(완료: 빈 문자열) ");
 
-    projectList.add(project);
+    this.projects[this.size++] = project;
   }
 
   //다른 패키지에 있는 App 클래스가 다음 메서드를 호출할 수 있도록 공개한다.
   public void list() {
     System.out.println("[프로젝트 목록]");
-
-    Object[] list = projectList.toArray();
-
-    for (Object obj : list) {
-      Project project = (Project) obj;
+    for (int i = 0; i < this.size; i++) {
       System.out.printf("%d, %s, %s, %s, %s, [%s]\n",
-          project.no, 
-          project.title, 
-          project.startDate, 
-          project.endDate, 
-          project.owner,
-          project.members);
+          this.projects[i].no, 
+          this.projects[i].title, 
+          this.projects[i].startDate, 
+          this.projects[i].endDate, 
+          this.projects[i].owner,
+          this.projects[i].members);
     }
   }
 
@@ -57,7 +56,7 @@ public class ProjectHandler {
     System.out.println("[프로젝트 상세보기]");
     int no = Prompt.inputInt("번호? ");
 
-    Project project = projectList.findByNo(no);
+    Project project = findByNo(no);
 
     if (project == null) {
       System.out.println("해당 번호의 프로젝트가 없습니다.");
@@ -76,7 +75,7 @@ public class ProjectHandler {
     System.out.println("[프로젝트 변경]");
     int no = Prompt.inputInt("번호? ");
 
-    Project project = projectList.findByNo(no);
+    Project project = findByNo(no);
 
     if (project == null) {
       System.out.println("해당 번호의 프로젝트가 없습니다.");
@@ -118,9 +117,9 @@ public class ProjectHandler {
     System.out.println("[프로젝트 삭제]");
     int no = Prompt.inputInt("번호? ");
 
-    Project project = projectList.findByNo(no);
+    int index = indexOf(no);
 
-    if (project == null) {
+    if (index == -1) {
       System.out.println("해당 번호의 프로젝트가 없습니다.");
       return;
     }
@@ -131,15 +130,36 @@ public class ProjectHandler {
       return;
     }
 
-    projectList.remove(project);
+    for (int i = index + 1; i < this.size; i++) {
+      this.projects[i - 1] = this.projects[i];
+    }
+    this.projects[--this.size] = null;
 
     System.out.println("프로젝트를 삭제하였습니다.");
+  }
+
+  private Project findByNo(int no) {
+    for (int i = 0; i < this.size; i++) {
+      if (this.projects[i].no == no) {
+        return this.projects[i];
+      }
+    }
+    return null;
+  }
+
+  private int indexOf(int no) {
+    for (int i = 0; i < this.size; i++) {
+      if (this.projects[i].no == no) {
+        return i;
+      }
+    }
+    return -1;
   }
 
   private String promptOwner(String label) {
     while (true) {
       String owner = Prompt.inputString(label);
-      if (this.memberList.exist(owner)) {
+      if (memberHandler.exist(owner)) {
         return owner;
       } else if (owner.length() == 0) {
         return null;
@@ -152,7 +172,7 @@ public class ProjectHandler {
     String members = "";
     while (true) {
       String member = Prompt.inputString(label);
-      if (this.memberList.exist(member)) {
+      if (memberHandler.exist(member)) {
         if (members.length() > 0) {
           members += ",";
         }

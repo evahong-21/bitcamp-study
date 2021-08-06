@@ -6,7 +6,14 @@ import com.eomcs.util.Prompt;
 
 public class BoardHandler {
 
-  BoardList2 boardList = new BoardList2();
+  // 모든 게시판의 최대 배열 개수가 같기 때문에 다음 변수는 
+  // 그냥 static 필드로 남겨둔다.
+  static final int MAX_LENGTH = 5;
+
+  // 게시판 마다 따로 관리해야 하기 때문에 인스턴스 필드로 전환한다.
+  // => static 옵션을 뺀다.
+  Board[] boards = new Board[MAX_LENGTH];
+  int size = 0;
 
   public void add() {
     System.out.println("[새 게시글]");
@@ -18,24 +25,21 @@ public class BoardHandler {
     board.content = Prompt.inputString("내용? ");
     board.writer = Prompt.inputString("작성자? ");
     board.registeredDate = new Date(System.currentTimeMillis());
+    //    board.viewCount = 0; // 인스턴스 변수는 생성되는 순간 기본 값이 0으로 설정된다.
 
-    boardList.add(board);
+    this.boards[this.size++] = board;
   }
 
   public void list() {
     System.out.println("[게시글 목록]");
-
-    Object[] list = boardList.toArray();
-
-    for (Object obj : list) {
-      Board board = (Board) obj;
+    for (int i = 0; i < this.size; i++) {
       System.out.printf("%d, %s, %s, %s, %d, %d\n", 
-          board.no, 
-          board.title, 
-          board.writer,
-          board.registeredDate,
-          board.viewCount, 
-          board.like);
+          this.boards[i].no, 
+          this.boards[i].title, 
+          this.boards[i].writer,
+          this.boards[i].registeredDate,
+          this.boards[i].viewCount, 
+          this.boards[i].like);
     }
   }
 
@@ -43,7 +47,7 @@ public class BoardHandler {
     System.out.println("[게시글 상세보기]");
     int no = Prompt.inputInt("번호? ");
 
-    Board board = boardList.findByNo(no);
+    Board board = findByNo(no);
 
     if (board == null) {
       System.out.println("해당 번호의 게시글이 없습니다.");
@@ -61,7 +65,7 @@ public class BoardHandler {
     System.out.println("[게시글 변경]");
     int no = Prompt.inputInt("번호? ");
 
-    Board board = boardList.findByNo(no);
+    Board board = findByNo(no);
 
     if (board == null) {
       System.out.println("해당 번호의 게시글이 없습니다.");
@@ -86,9 +90,9 @@ public class BoardHandler {
     System.out.println("[게시글 삭제]");
     int no = Prompt.inputInt("번호? ");
 
-    Board board = boardList.findByNo(no);
+    int index = indexOf(no);
 
-    if (board == null) {
+    if (index == -1) {
       System.out.println("해당 번호의 게시글이 없습니다.");
       return;
     }
@@ -99,10 +103,33 @@ public class BoardHandler {
       return;
     }
 
-    boardList.remove(board);
+    for (int i = index + 1; i < this.size; i++) {
+      this.boards[i - 1] = this.boards[i];
+    }
+    this.boards[--this.size] = null;
 
     System.out.println("게시글을 삭제하였습니다.");
   }
+
+  private Board findByNo(int no) {
+    for (int i = 0; i < this.size; i++) {
+      if (this.boards[i].no == no) {
+        return this.boards[i];
+      }
+    }
+    return null;
+  }
+
+  private int indexOf(int no) {
+    for (int i = 0; i < this.size; i++) {
+      if (this.boards[i].no == no) {
+        return i;
+      }
+    }
+    return -1;
+  }
+
+
 }
 
 

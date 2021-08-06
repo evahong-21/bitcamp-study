@@ -6,14 +6,17 @@ import com.eomcs.util.Prompt;
 
 public class TaskHandler {
 
-  TaskList2 taskList = new TaskList2();
-  MemberList2 memberList;
+  MemberHandler memberHandler;
 
-
-  public TaskHandler(MemberList2 memberList) {
-    this.memberList = memberList;
+  public TaskHandler(MemberHandler memberHandler) {
+    this.memberHandler = memberHandler;
   }
 
+  static final int MAX_LENGTH = 5;
+  Task[] tasks = new Task[MAX_LENGTH];
+  int size = 0;
+
+  //다른 패키지에 있는 App 클래스가 다음 메서드를 호출할 수 있도록 공개한다.
   public void add() {
     System.out.println("[작업 등록]");
 
@@ -29,23 +32,20 @@ public class TaskHandler {
       return; 
     }
 
-    taskList.add(task);
+    this.tasks[this.size++] = task;
   }
 
   //다른 패키지에 있는 App 클래스가 다음 메서드를 호출할 수 있도록 공개한다.
   public void list() {
     System.out.println("[작업 목록]");
 
-    Object[] list = taskList.toArray();
-
-    for (Object obj : list) {
-      Task task = (Task)obj;
+    for (int i = 0; i < this.size; i++) {
       System.out.printf("%d, %s, %s, %s, %s\n",
-          task.no, 
-          task.content, 
-          task.deadline, 
-          getStatusLabel(task.status), 
-          task.owner);
+          this.tasks[i].no, 
+          this.tasks[i].content, 
+          this.tasks[i].deadline, 
+          getStatusLabel(this.tasks[i].status), 
+          this.tasks[i].owner);
     }
   }
 
@@ -53,7 +53,7 @@ public class TaskHandler {
     System.out.println("[작업 상세보기]");
     int no = Prompt.inputInt("번호? ");
 
-    Task task = taskList.findByNo(no);
+    Task task = findByNo(no);
     if (task == null) {
       System.out.println("해당 번호의 작업이 없습니다.");
       return;
@@ -69,7 +69,7 @@ public class TaskHandler {
     System.out.println("[작업 변경]");
     int no = Prompt.inputInt("번호? ");
 
-    Task task = taskList.findByNo(no);
+    Task task = findByNo(no);
     if (task == null) {
       System.out.println("해당 번호의 작업이 없습니다.");
       return;
@@ -103,8 +103,8 @@ public class TaskHandler {
     System.out.println("[작업 삭제]");
     int no = Prompt.inputInt("번호? ");
 
-    Task task = taskList.findByNo(no);
-    if (task == null) {
+    int index = indexOf(no);
+    if (index == -1) {
       System.out.println("해당 번호의 작업이 없습니다.");
       return;
     }
@@ -115,9 +115,30 @@ public class TaskHandler {
       return;
     }
 
-    taskList.remove(task);
+    for (int i = index + 1; i < this.size; i++) {
+      this.tasks[i - 1] = this.tasks[i];
+    }
+    this.tasks[--this.size] = null;
 
     System.out.println("작업를 삭제하였습니다.");
+  }
+
+  private Task findByNo(int no) {
+    for (int i = 0; i < this.size; i++) {
+      if (this.tasks[i].no == no) {
+        return this.tasks[i];
+      }
+    }
+    return null;
+  }
+
+  private int indexOf(int no) {
+    for (int i = 0; i < this.size; i++) {
+      if (this.tasks[i].no == no) {
+        return i;
+      }
+    }
+    return -1;
   }
 
   private String getStatusLabel(int status) {
@@ -131,7 +152,7 @@ public class TaskHandler {
   private String promptOwner(String label) {
     while (true) {
       String owner = Prompt.inputString(label);
-      if (this.memberList.exist(owner)) {
+      if (memberHandler.exist(owner)) {
         return owner;
       } else if (owner.length() == 0) {
         return null;

@@ -6,11 +6,10 @@ import com.eomcs.util.Prompt;
 
 public class MemberHandler {
 
-  MemberList2 memberList = new MemberList2();
+  static final int MAX_LENGTH = 5;
 
-  public MemberList2 getMemberList() {
-    return memberList;
-  }
+  Member[] members = new Member[MAX_LENGTH];
+  int size = 0;
 
   public void add() {
     System.out.println("[회원 등록]");
@@ -25,22 +24,18 @@ public class MemberHandler {
     member.tel = Prompt.inputString("전화? ");
     member.registeredDate = new Date(System.currentTimeMillis());
 
-    memberList.add(member);
+    this.members[this.size++] = member;
   }
 
   public void list() {
     System.out.println("[회원 목록]");
-
-    Object[] list = memberList.toArray();
-
-    for (Object obj : list) {
-      Member member = (Member) obj;
+    for (int i = 0; i < this.size; i++) {
       System.out.printf("%d, %s, %s, %s, %s\n", 
-          member.no, 
-          member.name, 
-          member.email, 
-          member.tel, 
-          member.registeredDate);
+          this.members[i].no, 
+          this.members[i].name, 
+          this.members[i].email, 
+          this.members[i].tel, 
+          this.members[i].registeredDate);
     }
   }
 
@@ -48,7 +43,7 @@ public class MemberHandler {
     System.out.println("[회원 상세보기]");
     int no = Prompt.inputInt("번호? ");
 
-    Member member = memberList.findByNo(no);
+    Member member = findByNo(no);
 
     if (member == null) {
       System.out.println("해당 번호의 회원이 없습니다.");
@@ -66,7 +61,7 @@ public class MemberHandler {
     System.out.println("[회원 변경]");
     int no = Prompt.inputInt("번호? ");
 
-    Member member = memberList.findByNo(no);
+    Member member = findByNo(no);
 
     if (member == null) {
       System.out.println("해당 번호의 회원이 없습니다.");
@@ -98,9 +93,9 @@ public class MemberHandler {
     System.out.println("[회원 삭제]");
     int no = Prompt.inputInt("번호? ");
 
-    Member member = memberList.findByNo(no);
+    int index = indexOf(no);
 
-    if (member == null) {
+    if (index == -1) {
       System.out.println("해당 번호의 회원이 없습니다.");
       return;
     }
@@ -111,9 +106,39 @@ public class MemberHandler {
       return;
     }
 
-    memberList.remove(member);
+    for (int i = index + 1; i < this.size; i++) {
+      this.members[i - 1] = this.members[i];
+    }
+    this.members[--this.size] = null;
 
     System.out.println("회원을 삭제하였습니다.");
+  }
+
+  boolean exist(String name) {
+    for (int i = 0; i < this.size; i++) {
+      if (this.members[i].name.equals(name)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  private Member findByNo(int no) {
+    for (int i = 0; i < this.size; i++) {
+      if (this.members[i].no == no) {
+        return this.members[i];
+      }
+    }
+    return null;
+  }
+
+  private int indexOf(int no) {
+    for (int i = 0; i < this.size; i++) {
+      if (this.members[i].no == no) {
+        return i;
+      }
+    }
+    return -1;
   }
 
 }
