@@ -13,8 +13,17 @@ public class TaskHandler {
   }
 
   static final int MAX_LENGTH = 5;
-  Task[] tasks = new Task[MAX_LENGTH];
+  //Task[] tasks = new Task[MAX_LENGTH];
   int size = 0;
+
+  public class Node {
+    Node next;
+    Task task;
+
+    public Node(Task task) {
+      this.task = task;
+    }
+  }
 
   //다른 패키지에 있는 App 클래스가 다음 메서드를 호출할 수 있도록 공개한다.
   public void add() {
@@ -31,7 +40,14 @@ public class TaskHandler {
       System.out.println("작업 등록을 취소합니다.");
       return; 
     }
-
+    if (size == tasks.length) {
+      Task[] arr = new Task[size + (size>>1)];
+      for (int i=0; i<size; i++) {
+        arr[i] = tasks[i];
+      }
+      tasks = arr;
+      System.out.println("작업 배열 늘림");
+    }
     this.tasks[this.size++] = task;
   }
 

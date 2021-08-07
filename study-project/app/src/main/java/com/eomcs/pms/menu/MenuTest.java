@@ -1,21 +1,20 @@
-package com.eomcs.pms;
+package com.eomcs.pms.menu;
 
 import com.eomcs.pms.handler.BoardHandler;
 import com.eomcs.pms.handler.MemberHandler;
 import com.eomcs.pms.handler.ProjectHandler;
 import com.eomcs.pms.handler.TaskHandler;
-import com.eomcs.pms.menu.Menu;
-import com.eomcs.pms.menu.MenuGroup;
-import com.eomcs.util.Prompt;
 
-public class App {
-  BoardHandler boardHandler = new BoardHandler();
-  MemberHandler memberHandler = new MemberHandler();
-  ProjectHandler projectHandler = new ProjectHandler(memberHandler);
-  TaskHandler taskHandler = new TaskHandler(memberHandler);
+public class MenuTest {
+  static BoardHandler boardHandler = new BoardHandler();
+  static MemberHandler memberHandler = new MemberHandler();
+  static ProjectHandler projectHandler = new ProjectHandler(memberHandler);
+  static TaskHandler taskHandler = new TaskHandler(memberHandler);
 
-  Menu createMenu() {
+  public static void main(String[] args) {
     MenuGroup rootMenu = new MenuGroup("메인", true);
+
+
     MenuGroup boardMenu = new MenuGroup("게시판");
     rootMenu.add(boardMenu);
 
@@ -129,31 +128,7 @@ public class App {
       public void execute() {
         taskHandler.delete();
       }});
-    return rootMenu;
-  }
 
-  void service() { 
-    //인스턴스 메서드는 다른 인스턴스 메서드를 new로 생성 안해도 사용가능.
-    createMenu().execute();
-    Prompt.close();
-  }
-
-  public static void main(String[] args) {
-    App app = new App();
-    app.service();
-
-
+    rootMenu.execute();
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-

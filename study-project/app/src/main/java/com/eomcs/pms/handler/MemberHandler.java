@@ -8,8 +8,20 @@ public class MemberHandler {
 
   static final int MAX_LENGTH = 5;
 
-  Member[] members = new Member[MAX_LENGTH];
+  //Member[] members = new Member[MAX_LENGTH];
   int size = 0;
+
+  public class Node {
+    Node next;
+    Member member;
+
+    public Node(Member member) {
+      this.member = member;
+    }
+  }
+
+  Node head;
+  Node tail;
 
   public void add() {
     System.out.println("[회원 등록]");
@@ -24,18 +36,27 @@ public class MemberHandler {
     member.tel = Prompt.inputString("전화? ");
     member.registeredDate = new Date(System.currentTimeMillis());
 
-    this.members[this.size++] = member;
+    Node node = new Node(member);
+    if (head ==null) {
+      head = tail = node;
+    } else {
+      tail.next = node;
+      tail = node;
+    }
+    size++;
   }
 
   public void list() {
     System.out.println("[회원 목록]");
-    for (int i = 0; i < this.size; i++) {
+    Node node = head;
+    while(node!=null) {
       System.out.printf("%d, %s, %s, %s, %s\n", 
-          this.members[i].no, 
-          this.members[i].name, 
-          this.members[i].email, 
-          this.members[i].tel, 
-          this.members[i].registeredDate);
+          node.member.no, 
+          node.member.name, 
+          node.member.email, 
+          node.member.tel, 
+          node.member.registeredDate);
+      node = node.next;
     }
   }
 
@@ -93,9 +114,9 @@ public class MemberHandler {
     System.out.println("[회원 삭제]");
     int no = Prompt.inputInt("번호? ");
 
-    int index = indexOf(no);
+    Member delMember = findByNo(no);
 
-    if (index == -1) {
+    if (delMember == null) {
       System.out.println("해당 번호의 회원이 없습니다.");
       return;
     }
@@ -105,40 +126,52 @@ public class MemberHandler {
       System.out.println("회원 삭제를 취소하였습니다.");
       return;
     }
+    Node node = head;
+    Node prev = null;
 
-    for (int i = index + 1; i < this.size; i++) {
-      this.members[i - 1] = this.members[i];
+    while(node!=null) {
+      if (node.member == delMember) {
+        if (node == head) {
+          head = node.next;
+        } else {
+          prev.next = node.next;
+        }
+        node.next = null;
+
+        if (node == tail) {
+          tail = node.next;
+        }
+        break;
+      }
+
+      prev = node;
+      node = node.next;
+
     }
-    this.members[--this.size] = null;
-
+    size--;
     System.out.println("회원을 삭제하였습니다.");
   }
 
   boolean exist(String name) {
-    for (int i = 0; i < this.size; i++) {
-      if (this.members[i].name.equals(name)) {
+    Node node = head;
+    while (node!=null) {
+      if (node.member.name.equals(name)) {
         return true;
       }
+      node = node.next;
     }
     return false;
   }
 
   private Member findByNo(int no) {
-    for (int i = 0; i < this.size; i++) {
-      if (this.members[i].no == no) {
-        return this.members[i];
+    Node node = head;
+    while(node!=null) {
+      if (node.member.no == no) {
+        return node.member;
       }
+      node = node.next;
     }
     return null;
-  }
-
-  private int indexOf(int no) {
-    for (int i = 0; i < this.size; i++) {
-      if (this.members[i].no == no) {
-        return i;
-      }
-    }
-    return -1;
   }
 
 }

@@ -7,14 +7,25 @@ import com.eomcs.util.Prompt;
 public class ProjectHandler {
 
   MemberHandler memberHandler;
-
   public ProjectHandler(MemberHandler memberHandler) {
     this.memberHandler = memberHandler; 
   }
 
   static final int MAX_LENGTH = 5;
-  Project[] projects = new Project[MAX_LENGTH];
+  //Project[] projects = new Project[MAX_LENGTH];
   int size = 0;
+
+  public class Node {
+    Node next;
+    Project project;
+
+    public Node(Project project) {
+      this.project = project;
+    }
+  }
+
+  Node head;
+  Node tail;
 
   public void add() {
     System.out.println("[프로젝트 등록]");
@@ -34,6 +45,7 @@ public class ProjectHandler {
     }
 
     project.members = promptMembers("팀원?(완료: 빈 문자열) ");
+
 
     this.projects[this.size++] = project;
   }
