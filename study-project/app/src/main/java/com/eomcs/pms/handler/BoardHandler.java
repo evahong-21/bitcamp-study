@@ -6,9 +6,10 @@ import com.eomcs.util.Prompt;
 
 public class BoardHandler {
 
-  // 모든 게시판의 최대 배열 개수가 같기 때문에 다음 변수는 
-  // 그냥 static 필드로 남겨둔다.
-  BoardList boardList = new BoardList();
+  List boardList;
+  public BoardHandler(List boardList) {
+    this.boardList = boardList;
+  }
 
   public void add() {
     System.out.println("[새 게시글]");
@@ -28,6 +29,7 @@ public class BoardHandler {
   public void list() {
     System.out.println("[게시글 목록]");
     Object[] list = boardList.toArray();
+
     for (Object obj : list) {
       Board board = (Board)obj;
       System.out.printf("%d, %s, %s, %s, %d, %d\n", 
@@ -44,7 +46,7 @@ public class BoardHandler {
     System.out.println("[게시글 상세보기]");
     int no = Prompt.inputInt("번호? ");
 
-    Board board = boardList.findByNo(no);
+    Board board = findByNo(no);
 
     if (board == null) {
       System.out.println("해당 번호의 게시글이 없습니다.");
@@ -62,7 +64,7 @@ public class BoardHandler {
     System.out.println("[게시글 변경]");
     int no = Prompt.inputInt("번호? ");
 
-    Board board = boardList.findByNo(no);
+    Board board = findByNo(no);
 
     if (board == null) {
       System.out.println("해당 번호의 게시글이 없습니다.");
@@ -87,7 +89,7 @@ public class BoardHandler {
     System.out.println("[게시글 삭제]");
     int no = Prompt.inputInt("번호? ");
 
-    Board delBoard = boardList.findByNo(no);
+    Board delBoard = findByNo(no);
 
     if (delBoard == null) {
       System.out.println("해당 번호의 게시글이 없습니다.");
@@ -104,7 +106,16 @@ public class BoardHandler {
     System.out.println("게시글을 삭제하였습니다.");
   }
 
-
+  public Board findByNo(int no) {
+    Object[] arr = boardList.toArray();
+    for (Object obj : arr ) {
+      Board board = (Board)obj;
+      if (board.no == no) {
+        return board;
+      }
+    }
+    return null;
+  }
 }
 
 

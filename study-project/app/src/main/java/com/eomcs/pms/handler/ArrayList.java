@@ -1,11 +1,12 @@
 package com.eomcs.pms.handler;
 
-public class ArrayList {
+public class ArrayList implements List{
 
-  int size = 0;
+  int size;
   static final int MAX_LENGTH = 5;
   Object[] objs = new Object[MAX_LENGTH];
 
+  @Override
   public void add(Object obj) {
     if (size == objs.length) {
       Object[] arr = new Object[objs.length + (objs.length>>1)];
@@ -18,6 +19,7 @@ public class ArrayList {
   }
 
 
+  @Override
   public Object[] toArray() {
     Object[] arr = new Object[size];
     for (int i=0; i<size; i++) {
@@ -26,6 +28,7 @@ public class ArrayList {
     return arr;
   }
 
+  @Override
   public boolean remove(Object obj) {
     int index = indexOf(obj);
     if (index == -1) {

@@ -1,6 +1,8 @@
 package com.eomcs.pms;
 
+import com.eomcs.pms.handler.ArrayList;
 import com.eomcs.pms.handler.BoardHandler;
+import com.eomcs.pms.handler.LinkedList;
 import com.eomcs.pms.handler.MemberHandler;
 import com.eomcs.pms.handler.ProjectHandler;
 import com.eomcs.pms.handler.TaskHandler;
@@ -9,11 +11,15 @@ import com.eomcs.pms.menu.MenuGroup;
 import com.eomcs.util.Prompt;
 
 public class App {
+  LinkedList boardList = new LinkedList();
+  ArrayList memberList = new ArrayList();
+  LinkedList projectList = new LinkedList();
+  ArrayList taskList = new ArrayList();
 
-  BoardHandler boardHandler = new BoardHandler();
-  MemberHandler memberHandler = new MemberHandler();
-  ProjectHandler projectHandler = new ProjectHandler(memberHandler.getMemberList());
-  TaskHandler taskHandler = new TaskHandler(memberHandler.getMemberList());
+  BoardHandler boardHandler = new BoardHandler(boardList);
+  MemberHandler memberHandler = new MemberHandler(memberList);
+  ProjectHandler projectHandler = new ProjectHandler(memberHandler, projectList);
+  TaskHandler taskHandler = new TaskHandler(memberHandler, taskList);
 
   public static void main(String[] args) {
     App app = new App();
@@ -21,8 +27,6 @@ public class App {
   }
 
   void service() {
-    //    Menu mainMenu = createMenu();
-    //    mainMenu.execute();
     createMenu().execute();
     Prompt.close();
   }

@@ -1,48 +1,50 @@
 package com.eomcs.pms.handler;
 
-import com.eomcs.pms.domain.Project;
+public class LinkedList implements List{
 
-public class ProjectList2 {
-
-  static class Node {
+  public class Node {
     Node next;
-    Project project;
+    Object obj;
 
-    Node(Project project) {
-      this.project = project;
+    public Node(Object obj) {
+      this.obj = obj;
     }
   }
-  int size = 0;
+  int size;
   Node head;
   Node tail;
 
-  public void add(Project project) {
-    Node node = new Node(project);
+  @Override
+  public void add(Object obj) {
+    Node node = new Node(obj);
+
     if (head == null) {
       head = tail = node;
     } else {
       tail.next = node;
       tail = node;
-    }
-    size++;
+    } size++;
   }
 
-  public Project[] toArray() {
-    Project[] arr = new Project[size];
+
+  @Override
+  public Object[] toArray() {
+    Object[] arr = new Object[size];
     Node node = head;
     for (int i=0; i<size; i++) {
-      arr[i] = node.project;
+      arr[i] = node.obj;
       node = node.next;
     }
     return arr;
   }
 
-  public boolean remove(Project project) {
+  @Override
+  public boolean remove(Object obj) {
+
     Node node = head;
     Node prev = null;
-
     while(node!=null) {
-      if (node.project == project) {
+      if (node.obj == obj) {
         if (node == head) {
           head = node.next;
         } else {
@@ -59,17 +61,6 @@ public class ProjectList2 {
       node = node.next;
     }
     return false;
-  }
-
-  public Project findByNo(int no) {
-    Node node = head;
-    while(node!=null) {
-      if (node.project.no == no) {
-        return node.project;
-      }
-      node = node.next;
-    }
-    return null;
   }
 
 
