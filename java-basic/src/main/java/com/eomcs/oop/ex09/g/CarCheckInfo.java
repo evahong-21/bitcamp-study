@@ -1,5 +1,7 @@
-package com.eomcs.oop.ex09.h;
+package com.eomcs.oop.ex09.g;
 
+// 이 인터페이스의 용도
+// - 자동차 점검 정보
 public interface CarCheckInfo {
   int getGas();
   int getBrakeOil();

@@ -15,6 +15,7 @@ public class Exam0160 {
     System.out.printf("%s : %s\n", s1, s2); // 원본은 바뀌지 않는다.
 
     String s3 = s1.concat(", world!");
+    System.out.println(s1 == s3);
     System.out.printf("%s : %s\n", s1, s3); // 원본은 바뀌지 않는다.
   }
 }
