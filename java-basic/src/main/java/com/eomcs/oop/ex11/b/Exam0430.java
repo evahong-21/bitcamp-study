@@ -25,11 +25,14 @@ public class Exam0430 {
     v1 = 100;
     m1();
     X obj = new X();
+    obj.test();
 
     // 다른 패키지 클래스의 스태틱 멤버
     v2 = 200;
     m2();
     Y obj2 = new Y();
+    obj2.test();
   }
+
 
 }
