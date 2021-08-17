@@ -28,6 +28,7 @@ public class Exam0210 {
       }
 
     };
+    obj.print();
   }
 }
 

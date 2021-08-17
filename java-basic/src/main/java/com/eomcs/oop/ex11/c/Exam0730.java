@@ -1,4 +1,4 @@
-// inner class : 응용 III
+// inner class : 응용 III > inner 클래스와 인터페이스 두번째
 package com.eomcs.oop.ex11.c;
 
 import java.util.ArrayList;

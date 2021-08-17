@@ -31,6 +31,7 @@ class D3 {
       }
     }
 
+    //    v2 = 300; > 에러 유발
     X obj = new X();
     obj.f();
   }
