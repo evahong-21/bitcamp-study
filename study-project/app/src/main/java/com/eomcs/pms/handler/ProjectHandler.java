@@ -6,13 +6,13 @@ import com.eomcs.util.Prompt;
 
 public class ProjectHandler {
 
-  MemberHandler memberHandler;
   List projectList;
-  public ProjectHandler(MemberHandler memberHandler, List projectList) {
-    this.memberHandler =  memberHandler;
-    this.projectList = projectList;
-  }
+  MemberHandler memberHandler;
 
+  public ProjectHandler(List projectList, MemberHandler memberHandler) {
+    this.projectList = projectList;
+    this.memberHandler = memberHandler;
+  }
 
   public void add() {
     System.out.println("[프로젝트 등록]");
@@ -25,26 +25,25 @@ public class ProjectHandler {
     project.setStartDate(Prompt.inputDate("시작일? "));
     project.setEndDate(Prompt.inputDate("종료일? "));
 
-    project.setOwner(memberHandler.promptOwner("만든이?(취소: 빈 문자열) "));
+    project.setOwner(memberHandler.promptMember("만든이?(취소: 빈 문자열) "));
     if (project.getOwner() == null) {
       System.out.println("프로젝트 등록을 취소합니다.");
       return;
     }
 
     project.setMembers(memberHandler.promptMembers("팀원?(완료: 빈 문자열) "));
+
     projectList.add(project);
   }
 
   //다른 패키지에 있는 App 클래스가 다음 메서드를 호출할 수 있도록 공개한다.
   public void list() {
-    //    if (projectList.size == 0) {
-    //      System.out.println("프로젝트가 없습니다.");
-    //      return;
-    //    }
     System.out.println("[프로젝트 목록]");
+
     Object[] list = projectList.toArray();
+
     for (Object obj : list) {
-      Project project = (Project)obj;
+      Project project = (Project) obj;
       System.out.printf("%d, %s, %s, %s, %s, [%s]\n",
           project.getNo(), 
           project.getTitle(), 
@@ -90,7 +89,7 @@ public class ProjectHandler {
     Date startDate = Prompt.inputDate(String.format("시작일(%s)? ", project.getStartDate()));
     Date endDate = Prompt.inputDate(String.format("종료일(%s)? ", project.getEndDate()));
 
-    String owner = memberHandler.promptOwner(String.format(
+    String owner = memberHandler.promptMember(String.format(
         "만든이(%s)?(취소: 빈 문자열) ", project.getOwner()));
     if (owner == null) {
       System.out.println("프로젝트 변경을 취소합니다.");
@@ -120,9 +119,9 @@ public class ProjectHandler {
     System.out.println("[프로젝트 삭제]");
     int no = Prompt.inputInt("번호? ");
 
-    Project delProject = findByNo(no);
+    Project project = findByNo(no);
 
-    if (delProject == null) {
+    if (project == null) {
       System.out.println("해당 번호의 프로젝트가 없습니다.");
       return;
     }
@@ -133,20 +132,22 @@ public class ProjectHandler {
       return;
     }
 
-    projectList.remove(delProject);
+    projectList.remove(project);
+
     System.out.println("프로젝트를 삭제하였습니다.");
   }
 
   public Project findByNo(int no) {
-    Object[] list = projectList.toArray();
-    for (Object obj : list) {
-      Project project = (Project)obj;
+    Object[] arr = projectList.toArray();
+    for (Object obj : arr) {
+      Project project = (Project) obj;
       if (project.getNo() == no) {
         return project;
       }
     }
     return null;
   }
+
 }
 
 

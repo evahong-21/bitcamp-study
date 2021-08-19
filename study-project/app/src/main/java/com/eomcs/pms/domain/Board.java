@@ -53,5 +53,4 @@ public class Board {
   public void setLike(int like) {
     this.like = like;
   }
-
 }

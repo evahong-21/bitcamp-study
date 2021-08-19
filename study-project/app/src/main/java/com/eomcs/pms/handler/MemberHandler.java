@@ -7,6 +7,7 @@ import com.eomcs.util.Prompt;
 public class MemberHandler {
 
   List memberList;
+
   public MemberHandler(List memberList) {
     this.memberList = memberList;
   }
@@ -20,18 +21,20 @@ public class MemberHandler {
     member.setName(Prompt.inputString("이름? "));
     member.setEmail(Prompt.inputString("이메일? "));
     member.setPassword(Prompt.inputString("암호? "));
-    member.setPassword(Prompt.inputString("사진? "));
-    member.setTel(Prompt.inputString("전화? "));;
+    member.setPhoto(Prompt.inputString("사진? "));
+    member.setTel(Prompt.inputString("전화? "));
     member.setRegisteredDate(new Date(System.currentTimeMillis()));
-    memberList.add(member);
 
+    memberList.add(member);
   }
 
   public void list() {
     System.out.println("[회원 목록]");
+
     Object[] list = memberList.toArray();
+
     for (Object obj : list) {
-      Member member = (Member)obj;
+      Member member = (Member) obj;
       System.out.printf("%d, %s, %s, %s, %s\n", 
           member.getNo(), 
           member.getName(), 
@@ -95,9 +98,9 @@ public class MemberHandler {
     System.out.println("[회원 삭제]");
     int no = Prompt.inputInt("번호? ");
 
-    Member delMember = findByNo(no);
+    Member member = findByNo(no);
 
-    if (delMember == null) {
+    if (member == null) {
       System.out.println("해당 번호의 회원이 없습니다.");
       return;
     }
@@ -108,14 +111,15 @@ public class MemberHandler {
       return;
     }
 
-    memberList.remove(delMember);
+    memberList.remove(member);
+
     System.out.println("회원을 삭제하였습니다.");
   }
 
-  public Member findByNo(int no) {
-    Object[] list = memberList.toArray();
-    for (Object obj : list) {
-      Member member = (Member)obj;
+  private Member findByNo(int no) {
+    Object[] arr = memberList.toArray();
+    for (Object obj : arr) {
+      Member member = (Member) obj;
       if (member.getNo() == no) {
         return member;
       }
@@ -124,9 +128,9 @@ public class MemberHandler {
   }
 
   public boolean exist(String name) {
-    Object[] list = memberList.toArray();
-    for (Object obj : list) {
-      Member member = (Member)obj;
+    Object[] arr = memberList.toArray();
+    for (Object obj : arr) {
+      Member member = (Member) obj;
       if (member.getName().equals(name)) {
         return true;
       }
@@ -134,10 +138,9 @@ public class MemberHandler {
     return false;
   }
 
-  public String promptOwner(String label) {
+  public String promptMember(String label) {
     while (true) {
       String owner = Prompt.inputString(label);
-      // MemberHandler의 인스턴스는 미리 인스턴스 변수에 주입 받은 것을 사용한다.
       if (this.exist(owner)) {
         return owner;
       } else if (owner.length() == 0) {

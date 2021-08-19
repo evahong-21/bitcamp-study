@@ -8,11 +8,12 @@ public class TaskHandler {
 
   List taskList;
   MemberHandler memberHandler;
-  public TaskHandler(MemberHandler memberHandler, List taskList) {
-    this.memberHandler =  memberHandler;
-    this.taskList = taskList;
-  }
 
+
+  public TaskHandler(List taskList, MemberHandler memberHandler) {
+    this.taskList = taskList;
+    this.memberHandler = memberHandler;
+  }
 
   public void add() {
     System.out.println("[작업 등록]");
@@ -23,24 +24,23 @@ public class TaskHandler {
     task.setContent(Prompt.inputString("내용? "));
     task.setDeadline(Prompt.inputDate("마감일? "));
     task.setStatus(promptStatus());
-    task.setOwner(memberHandler.promptOwner("담당자?(취소: 빈 문자열) "));
+    task.setOwner(memberHandler.promptMember("담당자?(취소: 빈 문자열) "));
     if (task.getOwner() == null) {
       System.out.println("작업 등록을 취소합니다.");
       return; 
     }
+
     taskList.add(task);
   }
 
   //다른 패키지에 있는 App 클래스가 다음 메서드를 호출할 수 있도록 공개한다.
   public void list() {
-    //    if (taskList.size == 0) {
-    //      System.out.println("작업이 없습니다.");
-    //      return;
-    //    }
     System.out.println("[작업 목록]");
+
     Object[] list = taskList.toArray();
+
     for (Object obj : list) {
-      Task task = (Task)obj;
+      Task task = (Task) obj;
       System.out.printf("%d, %s, %s, %s, %s\n",
           task.getNo(), 
           task.getContent(), 
@@ -66,8 +66,6 @@ public class TaskHandler {
     System.out.printf("담당자: %s\n", task.getOwner());
   }
 
-  // update()가 사용할 MemberHandler 는 
-  // 인스턴스 변수에 미리 주입 받기 때문에 파라미터로 받을 필요가 없다.
   public void update() {
     System.out.println("[작업 변경]");
     int no = Prompt.inputInt("번호? ");
@@ -81,7 +79,7 @@ public class TaskHandler {
     String content = Prompt.inputString(String.format("내용(%s)? ", task.getContent()));
     Date deadline = Prompt.inputDate(String.format("마감일(%s)? ", task.getDeadline()));
     int status = promptStatus(task.getStatus());
-    String owner = memberHandler.promptOwner(String.format(
+    String owner = memberHandler.promptMember(String.format(
         "담당자(%s)?(취소: 빈 문자열) ", task.getOwner()));
     if (owner == null) {
       System.out.println("작업 변경을 취소합니다.");
@@ -106,8 +104,8 @@ public class TaskHandler {
     System.out.println("[작업 삭제]");
     int no = Prompt.inputInt("번호? ");
 
-    Task delTask = findByNo(no);
-    if (delTask == null) {
+    Task task = findByNo(no);
+    if (task == null) {
       System.out.println("해당 번호의 작업이 없습니다.");
       return;
     }
@@ -117,10 +115,11 @@ public class TaskHandler {
       System.out.println("작업 삭제를 취소하였습니다.");
       return;
     }
-    taskList.remove(delTask);
+
+    taskList.remove(task);
+
     System.out.println("작업를 삭제하였습니다.");
   }
-
 
   private String getStatusLabel(int status) {
     switch (status) {
@@ -129,8 +128,6 @@ public class TaskHandler {
       default: return "신규";
     }
   }
-
-
 
   private int promptStatus() {
     return promptStatus(-1);
@@ -148,10 +145,10 @@ public class TaskHandler {
     return Prompt.inputInt("> ");
   }
 
-  public Task findByNo(int no) {
-    Object[] list = taskList.toArray();
-    for (Object obj : list) {
-      Task task = (Task)obj;
+  private Task findByNo(int no) {
+    Object[] arr = taskList.toArray();
+    for (Object obj : arr) {
+      Task task = (Task) obj;
       if (task.getNo() == no) {
         return task;
       }

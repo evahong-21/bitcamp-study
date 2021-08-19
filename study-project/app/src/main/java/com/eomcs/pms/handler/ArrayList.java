@@ -1,53 +1,72 @@
 package com.eomcs.pms.handler;
 
-public class ArrayList implements List{
+public class ArrayList extends AbstractList {
 
-  int size;
   static final int MAX_LENGTH = 5;
-  Object[] objs = new Object[MAX_LENGTH];
 
-  @Override
+  Object[] list = new Object[MAX_LENGTH];
+
   public void add(Object obj) {
-    if (size == objs.length) {
-      Object[] arr = new Object[objs.length + (objs.length>>1)];
-      for (int i=0; i<size; i++) {
-        arr[i] = objs[i];
+    if (size == list.length) {
+      Object[] arr = new Object[list.length + (list.length >> 1)];
+      for (int i = 0; i < size; i++) {
+        arr[i] = list[i];
       }
-      objs = arr;
+      list = arr;
     }
-    objs[size++] = obj; 
+    this.list[this.size++] = obj;
   }
 
-
-  @Override
   public Object[] toArray() {
-    Object[] arr = new Object[size];
-    for (int i=0; i<size; i++) {
-      arr[i] = objs[i];
+    Object[] arr = new Object[this.size]; // 배열에 저장된 값을 담을 정도의 크기를 가진 새 배열을 만든다.
+    for (int i = 0; i < this.size; i++) { // 배열에 저장된 값을 새 배열에 복사한다.
+      arr[i] = list[i];
     }
-    return arr;
+    return arr; // 새 배열을 리턴한다.
   }
 
-  @Override
   public boolean remove(Object obj) {
     int index = indexOf(obj);
     if (index == -1) {
       return false;
     }
+
     for (int i = index + 1; i < this.size; i++) {
-      this.objs[i - 1] = this.objs[i];
+      this.list[i - 1] = this.list[i];
     }
-    this.objs[--this.size] = null;
+    this.list[--this.size] = null;
+
     return true;
   }
 
-
-  public int indexOf(Object obj) {
+  private int indexOf(Object obj) {
     for (int i = 0; i < this.size; i++) {
-      if (this.objs[i] == obj) {
+      if (this.list[i] == obj) {
         return i;
       }
     }
     return -1;
   }
+
+  @Override
+  public Object get(int index) {
+    if (index <0 || index>=this.size) {
+      return null;
+    }
+    return this.list[index];
+  }
+
+  @Override
+  public Object remove(int index) {
+    if (index <0 || index>=this.size) {
+      return null;
+    }
+    Object deleted = this.list[index];
+    for (int i = index + 1; i < this.size; i++) {
+      this.list[i - 1] = this.list[i];
+    }
+    this.list[--this.size] = null;
+    return deleted;
+  }
+
 }

@@ -1,11 +1,13 @@
 package com.eomcs.pms.menu;
 
+import com.eomcs.pms.handler.Stack;
 import com.eomcs.util.Prompt;
 
 // 역할
 // - 다른 메뉴를 포함하는 컨테이너 역할을 수행한다.
 // 
 public class MenuGroup extends Menu {
+  static Stack breadCrumb = new Stack();
 
   Menu[] childs = new Menu[100];
   int size;
@@ -73,8 +75,11 @@ public class MenuGroup extends Menu {
 
   @Override // 컴파일러에게 오버라이딩을 제대로 하는지 조사해 달라고 요구한다.
   public void execute() {
+
+    breadCrumb.push(this);
+
     while (true) {
-      System.out.printf("\n[%s]\n", this.title);
+      System.out.printf("\n[%s]\n", getBreadCrumb());
       for (int i = 0; i < this.size; i++) {
         System.out.printf("%d. %s\n", i + 1, this.childs[i].title);
       }
@@ -95,6 +100,19 @@ public class MenuGroup extends Menu {
 
       this.childs[menuNo - 1].execute();
     }
+  }
+
+  private String getBreadCrumb() {
+    String path = "";
+
+    for (int i=0; i<breadCrumb.size(); i++) {
+      if (path.length() > 0) {
+        path+= "/";
+      }
+      Menu menu = (Menu)breadCrumb.get(i);
+      path += menu.title;
+    }
+    return path;
   }
 
 }
