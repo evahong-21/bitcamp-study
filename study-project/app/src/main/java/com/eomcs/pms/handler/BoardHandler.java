@@ -1,14 +1,15 @@
 package com.eomcs.pms.handler;
 
 import java.sql.Date;
+import java.util.List;
 import com.eomcs.pms.domain.Board;
 import com.eomcs.util.Prompt;
 
 public class BoardHandler {
 
-  List boardList;
+  List<Board> boardList;
 
-  public BoardHandler(List boardList) {
+  public BoardHandler(List<Board> boardList) {
     this.boardList = boardList;
   }
 
@@ -29,10 +30,13 @@ public class BoardHandler {
   public void list() {
     System.out.println("[게시글 목록]");
 
-    Object[] list = boardList.toArray();
+    // 현재 BoardList에 보관된 값을 담을 수 있는 만큼 크기의 배열을 생성한다.
+    Board[] boards = new Board[boardList.size()];
+    //배열을 넘겨주면서 값을 받는다.
+    // => 넘겨주는 배열의 크기가 충분하기 떄문에 toArray()는 새 배열을 만들지 않을 것이다.
+    boardList.toArray(boards);
 
-    for (Object obj : list) {
-      Board board = (Board) obj;
+    for (Board board : boards) {
       System.out.printf("%d, %s, %s, %s, %d, %d\n", 
           board.getNo(), 
           board.getTitle(), 
@@ -111,9 +115,10 @@ public class BoardHandler {
   }
 
   private Board findByNo(int no) {
-    Object[] arr = boardList.toArray();
-    for (Object obj : arr) {
-      Board board = (Board) obj;
+    //일부러 BoardList에 들어있는 배열보다 작은 배열을 넘겨준다.
+    // => 그러면 toArray는 새 배열을 만들어 값을 저장한 후 리턴할것이다.
+    Board[] arr = boardList.toArray(new Board[0]);
+    for (Board board : arr) {
       if (board.getNo() == no) {
         return board;
       }
