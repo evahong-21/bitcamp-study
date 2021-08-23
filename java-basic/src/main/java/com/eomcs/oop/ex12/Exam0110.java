@@ -10,7 +10,19 @@ public class Exam0110 {
     void play();
   }
 
+
   public static void main(String[] args) {
+
+    //시작 - 클래스 생성 및 호출
+    class MyPlayer implements Player {
+      @Override
+      public void play() {
+        System.out.println("구현");
+      }
+    }
+    Player p2 = new MyPlayer();
+    p2.play();
+
 
     // 익명 클래스로 인터페이스 구현하기
     Player p1 = new Player() {
@@ -21,14 +33,19 @@ public class Exam0110 {
     };
     p1.play();
 
-    // 람다 문법으로 인터페이스 구현하기
-    // => 메서드 한 개짜리 인터페이스를 구현한 익명 클래스를 
-    //    좀 더 간단히 표현하기 위해 만든 문법이다.
-    // => 뻔한 코드 생략!
-    Player p2 = () -> {
-      System.out.println("람다");
-    };
-    p2.play();
+
+    //익명클래스 선언과 동시에 메서드 호출
+    new Player() {
+      @Override
+      public void play() {
+        System.out.println("구현");
+      }
+    }.play();
+
+
+    //마지막 - 람다 사용하여 메서드 호출.
+    Player p3 = () -> System.out.println("구현");
+    p3.play();
   }
 }
 
@@ -43,6 +60,7 @@ public class Exam0110 {
 // => 람다 문법이 초기에 등장했을 때는 익명 클래스로 변환되었다.
 // => 그러나 최근에는 그냥 멤버 메서드로 변환된다.
 // => 예) 
+
 //private static synthetic void lambda$0();
 //0  getstatic java.lang.System.out : java.io.PrintStream [33]
 //3  ldc <String "람다"> [39]

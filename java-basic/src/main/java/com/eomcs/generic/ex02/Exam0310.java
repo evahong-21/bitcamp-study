@@ -32,7 +32,10 @@ public class Exam0310 {
 
     // 제네릭을 지정하면 값을 꺼낼 때 형변환할 필요가 없다.
     Member m = map3.get("aaa"); // OK!
-
+    System.out.println(m);
+    System.out.println(m.getClass());
+    System.out.println(m.age);
+    System.out.println(m.name);
   }
 }
 

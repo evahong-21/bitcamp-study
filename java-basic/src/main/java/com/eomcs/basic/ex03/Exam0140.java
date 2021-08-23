@@ -59,8 +59,12 @@ public class Exam0140 {
     list.add(m3);
     System.out.println(list);
 
+    // Object로 상속받은 equals는 인스턴스의 객체(주소)를 비교함.
+    // => Override 해야함.
+
     // indexOf(값)
     // - 목록에 같은 값을 가진 객체의 인덱스를 알아낸다.
+    // - indexOf가 값을 비교할때 equals 메서드를 사용함.
     // - 값을 비교할 때는 contains()와 마찬가지로
     //   equals()의 리턴 값이 true인 경우 같은 값으로 간주한다.
     //

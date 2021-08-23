@@ -34,7 +34,7 @@ public class Exam0211 {
     //    list2.add(new String()); // 컴파일 오류!
     //    list2.add(new Integer(100)); // 컴파일 오류!
     //    list2.add(new java.util.Date()); // 컴파일 오류!
-    //    list2.add(new Member("홍길동", 20)); // 컴파일 오류!
+    //        list2.add(new Member("홍길동", 20)); // 컴파일 오류!
   }
 }
 

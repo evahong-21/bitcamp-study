@@ -41,7 +41,7 @@ public class Exam0225 {
     list.add(new C()); // OK
 
     Object obj1 = list.get(0);
-
+    System.out.println(obj1);
     // 컴파일 오류!
     // - 넘어오는 ArrayList의 항목 타입이 B1 일 수도 있고, 그 상위 일 수 도 있다.
     //

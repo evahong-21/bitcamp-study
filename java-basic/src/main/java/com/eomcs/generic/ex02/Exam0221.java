@@ -25,6 +25,7 @@ public class Exam0221 {
     // => Object의 하위 클래스는 안된다.
 
     m1(new ArrayList());
+    m1(new ArrayList<>());
     m1(new ArrayList<Object>());
 
     //    m1(new ArrayList<A>());  // 컴파일 오류!

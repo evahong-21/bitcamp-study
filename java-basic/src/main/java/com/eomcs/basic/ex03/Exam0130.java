@@ -29,6 +29,7 @@ public class Exam0130 {
       //        return result;
       //      }
 
+      // Override 안하면 다 false로 나옴.
       @Override
       public boolean equals(Object obj) {
         if (this == obj)
@@ -63,6 +64,7 @@ public class Exam0130 {
     // - 해당 인스턴스와 같은 객체가 있는지 알아낸다.
     // - 단 인스턴스 주소를 비교하는 것이 아니라
     //   equals()의 결과가 true 인지 비교한다.
+    //      => equals()를 override 했기 때문에 true로 나옴.
     // - hashCode()의 리턴 값이 같을 필요는 없다.
     //
     Member m4 = new Member("임꺽정", 30);

@@ -32,6 +32,9 @@ public class Exam0213 {
     //    list1 = new ArrayList<C>(); // 컴파일 오류!
 
     list1.add(new B2());
+    list1.add(new A());
+    list1.add(new B1());
+    list1.add(new C());
 
     ArrayList<B2> list2;
 

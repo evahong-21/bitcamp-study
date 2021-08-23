@@ -26,6 +26,7 @@ public class Exam0223 {
     //
     ArrayList list = new ArrayList(); // 모든 타입의 객체를 다 저장할 수 있다.
     list.add(new B1());
+    list.add(new C());
     list.add(new String());
     list.add(new java.util.Date());
     list.add(new StringBuffer());
@@ -55,6 +56,7 @@ public class Exam0223 {
 
     // list에 B1 타입이 아닌 다른 타입을 저장할 때는 아무런 문제가 발생하지 않았지만,
     // ArrayList에서 값을 꺼낼 때 메서드에서 지정한 <B1> 타입이 아니면 ClassCastException 발생!
+    // 형변환 관련 에러. list.add(B1이거나 C);부터 에러 발생.
     for(int i = 0; i < list.size(); i++) {
       B1 temp = list.get(i);
       System.out.println(temp);

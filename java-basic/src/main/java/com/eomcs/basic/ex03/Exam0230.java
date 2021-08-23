@@ -59,7 +59,10 @@ public class Exam0230 {
     list.add(m2);
     list.add(m3);
 
+    // ArrayList 의 값을 꺼내주는 일을 할 걕체를 얻음.
     Iterator<Member> iterator = list.iterator();
+
+    // Iterator(데이터 꺼내주는 일을 하는 객체) 에게 데이터 달라고 요청.
     while (iterator.hasNext()) {
       Member m = iterator.next();
       System.out.printf("이름: %s, 나이: %d\n", m.name, m.age);
