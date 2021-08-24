@@ -2,6 +2,7 @@
 package com.eomcs.basic.ex03;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.function.Consumer;
 
 public class Exam0240 {
@@ -59,6 +60,35 @@ public class Exam0240 {
     list.add(m2);
     list.add(m3);
 
+    Member[] arr = new Member[list.size()];
+    list.toArray(arr);
+
+    // Member[] arr = list.toArray(new Member[list.size()]); 위 두줄이랑 같은 뜻.
+    // Member[] arr = list.toArray(new Member[0]); 이렇게 쓸 수도 있음
+
+    for (Member m : arr) { // 얘는 무조건 끝까지 for문을 돌아감.
+      System.out.printf("이름: %s, 나이: %d\n", m.name, m.age);
+    }
+
+    for (Member m : list) { // 가능
+      System.out.printf("이름: %s, 나이: %d\n", m.name, m.age);
+    }
+
+    // 목록에서 값을 꺼내주는자 = Iterator 
+    Iterator<Member> 목록에서값을꺼내주는자 = list.iterator(); 
+    while (목록에서값을꺼내주는자.hasNext()) {
+      Member m = 목록에서값을꺼내주는자.next();
+      System.out.printf("이름: %s, 나이: %d\n", m.name, m.age);
+    }
+
+    //이게 원본 그 뒤에 람다까지  
+    list.forEach(new Consumer<Member>() {
+      @Override
+      public void accept(Member t) {
+        System.out.printf("이름: %s, 나이: %d\n", t.name, t.age);
+      }
+    });
+
     // forEach() 메서드에게 넘길 객체
     // => Consumer 규칙에 따라 만들어야 한다.
     // => List 보관된 객체를 반복문을 통해 꺼낼때 마다  
@@ -79,6 +109,8 @@ public class Exam0240 {
     //MyConsumer 객체의 accept()를 호출해.
     list.forEach(new MyConsumer());
   }
+
+
 }
 
 

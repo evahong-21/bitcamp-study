@@ -22,6 +22,17 @@ public class Exam0710 {
     // 지정된 클래스의 인스턴스를 만든 후 생성자를 호출한다.
     List list = f1.create(); // new ArrayList();
 
+    // 익명클래스
+    ListFactory f2 = new ListFactory() {
+      @Override
+      public List create() {
+        return new ArrayList();
+      }
+    };
+
+    // 람다사용법
+    ListFactory f3 = () -> new ArrayList();
+
     System.out.println(list instanceof ArrayList);
     System.out.println(list.getClass().getName());
   }
