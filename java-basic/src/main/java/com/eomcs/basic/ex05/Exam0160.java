@@ -15,7 +15,8 @@ public class Exam0160 {
     stack.push("ccc");
 
     Iterator<String> iterator = stack.iterator();
-
+    // Iterator는 처음 들어간 순서대로 호출한다.
+    // stack엔 pop을 사용해야 마지막에 들어간게 호출된다.
     while (iterator.hasNext()) {
       System.out.println(iterator.next());
     }
