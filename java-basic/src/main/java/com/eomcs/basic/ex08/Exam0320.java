@@ -35,7 +35,8 @@ public class Exam0320 {
     // 해결책?
     // - 값을 변경하면 다시 Iterator를 얻어야 한다.
     //
-    //    키를꺼내주는객체 = keys.iterator();
+    키를꺼내주는객체 = keys.iterator(); // 다시!
+    // 이런 문제 떄문에 for문 쓰는거 추천
 
     // 무효한 Iterator를 사용하면 실행오류가 발생할 것이다.
     while (키를꺼내주는객체.hasNext()) {

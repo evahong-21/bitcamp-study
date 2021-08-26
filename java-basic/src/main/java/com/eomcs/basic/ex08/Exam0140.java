@@ -2,6 +2,7 @@
 package com.eomcs.basic.ex08;
 
 import java.util.HashMap;
+import java.util.Objects;
 
 public class Exam0140 {
 
@@ -23,12 +24,21 @@ public class Exam0140 {
 
       @Override
       public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((major == null) ? 0 : major.hashCode());
-        result = prime * result + no;
-        return result;
+        return Objects.hash(major, no);
       }
+
+      //      @Override
+      //      public boolean equals(Object obj) {
+      //        if (this == obj)
+      //          return true;
+      //        if (obj == null)
+      //          return false;
+      //        if (getClass() != obj.getClass())
+      //          return false;
+      //        MyKey other = (MyKey) obj;
+      //        return Objects.equals(major, other.major) && no == other.no;
+      //      }
+
     }
 
     MyKey k1 = new MyKey("컴공", 1);

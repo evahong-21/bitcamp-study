@@ -1,26 +1,20 @@
 // Iterator 의 사용
 package com.eomcs.basic.ex07;
 
-import java.util.Iterator;
-import java.util.LinkedList;
+import java.util.HashSet;
 
 public class Exam0230 {
   public static void main(String[] args) {
-    LinkedList<String> list = new LinkedList<>();
-    list.add("aaa");
-    list.add("bbb");
-    list.add("ccc");
-    list.add("ddd");
-    list.add("eee");
+    HashSet<String> set = new HashSet<>();
+    set.add("aaa");
+    set.add("bbb");
+    set.add("ccc");
+    set.add("ddd");
+    set.add("eee");
 
-    Iterator<String> 컬렉션에서값을꺼내주는객체 = list.iterator();
-
-    while (컬렉션에서값을꺼내주는객체.hasNext()) {
-      System.out.print(컬렉션에서값을꺼내주는객체.next() + ", ");
+    for (String s : set) {
+      System.out.println(s + ", ");
     }
     System.out.println();
-
-    // Iterator 를 사용하면,
-    // 컬렉션의 종류에 상관없이 일관된 방식으로 값을 조회할 수 있다.
   }
 }

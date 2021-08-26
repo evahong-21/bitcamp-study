@@ -2,6 +2,7 @@
 package com.eomcs.basic.ex08;
 
 import java.util.HashMap;
+import java.util.Objects;
 
 public class Exam0150 {
 
@@ -23,11 +24,7 @@ public class Exam0150 {
 
       @Override
       public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((major == null) ? 0 : major.hashCode());
-        result = prime * result + no;
-        return result;
+        return Objects.hash(major, no);
       }
 
       @Override
@@ -39,14 +36,7 @@ public class Exam0150 {
         if (getClass() != obj.getClass())
           return false;
         MyKey other = (MyKey) obj;
-        if (major == null) {
-          if (other.major != null)
-            return false;
-        } else if (!major.equals(other.major))
-          return false;
-        if (no != other.no)
-          return false;
-        return true;
+        return Objects.equals(major, other.major) && no == other.no;
       }
     }
 

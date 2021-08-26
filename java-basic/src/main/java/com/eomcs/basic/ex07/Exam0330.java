@@ -2,6 +2,7 @@
 package com.eomcs.basic.ex07;
 
 import java.util.HashSet;
+import java.util.Objects;
 
 public class Exam0330 {
 
@@ -22,12 +23,22 @@ public class Exam0330 {
 
     @Override
     public int hashCode() {
-      final int prime = 31;
-      int result = 1;
-      result = prime * result + age;
-      result = prime * result + ((name == null) ? 0 : name.hashCode());
-      return result;
+      return Objects.hash(age, name);
     }
+
+    @Override
+    public boolean equals(Object obj) {
+      if (this == obj)
+        return true;
+      if (obj == null)
+        return false;
+      if (getClass() != obj.getClass())
+        return false;
+      Member other = (Member) obj;
+      return age == other.age && Objects.equals(name, other.name);
+    }
+
+
   }
 
   public static void main(String[] args) {
@@ -38,7 +49,11 @@ public class Exam0330 {
     Member v4 = new Member("안중근", 20);
     Member v5 = new Member("유관순", 16);
 
-    System.out.println(v3.equals(v5)); // true
+    System.out.printf("v3 == v5: %b\n", v3 == v5);
+    System.out.printf("equals(): %b\n", v3.equals(v5));
+    System.out.printf("hashCod(): %d, %d\n", v3.hashCode(), v5.hashCode());
+
+    //    System.out.println(v3.equals(v5)); // true
 
     HashSet<Member> set = new HashSet<>();
     set.add(v1);

@@ -19,8 +19,8 @@ public class Exam0410 {
     System.out.println("--------------------------------");
 
     Hashtable<String,Object> table = new Hashtable<>();
-    //    table.put(null, "홍길동"); // 실행 오류! 1) key가 null이 될 수 없다.
-    //    table.put("s02", null); // 실행 오류! 2) value가 null이 될 수 없다.
+    table.put(null, "홍길동"); // 실행 오류! 1) key가 null이 될 수 없다.
+    table.put("s02", null); // 실행 오류! 2) value가 null이 될 수 없다.
     // 3) 동기화 지원
 
     // 결론!

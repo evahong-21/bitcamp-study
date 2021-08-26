@@ -2,6 +2,7 @@
 package com.eomcs.basic.ex08;
 
 import java.util.HashMap;
+import java.util.Objects;
 
 public class Exam0130 {
 
@@ -21,6 +22,11 @@ public class Exam0130 {
         return "MyKey [major=" + major + ", no=" + no + "]";
       }
 
+      //      @Override
+      //      public int hashCode() {
+      //        return Objects.hash(major, no);
+      //      }
+
       @Override
       public boolean equals(Object obj) {
         if (this == obj)
@@ -30,15 +36,10 @@ public class Exam0130 {
         if (getClass() != obj.getClass())
           return false;
         MyKey other = (MyKey) obj;
-        if (major == null) {
-          if (other.major != null)
-            return false;
-        } else if (!major.equals(other.major))
-          return false;
-        if (no != other.no)
-          return false;
-        return true;
+        return Objects.equals(major, other.major) && no == other.no;
       }
+
+
     }
 
     MyKey k1 = new MyKey("컴공", 1);
@@ -72,7 +73,8 @@ public class Exam0130 {
     System.out.printf("hashCode(): %d, %d\n", k3.hashCode(), k6.hashCode());
     System.out.println("-----------------------------------");
 
-    // equals()의 리턴 값이 true라고 해서 같은 key로 간주하지 않는다.
+    // equals()의 리턴값이 true 더라도 hashCode()의 리턴값이 다르면
+    // 다른 key로 간주한다.
     System.out.println(map.get(k6));
   }
 
