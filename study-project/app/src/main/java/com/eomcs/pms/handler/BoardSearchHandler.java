@@ -10,10 +10,11 @@ public class BoardSearchHandler extends AbstractBoardHandler {
     super(boardList);
   }
 
-  public void search() {
+  @Override
+  public void execute() {
     System.out.println("[게시글 검색]");
 
-    String input = Prompt.inputString("검색어 ? ");
+    String input = Prompt.inputString("검색어? ");
 
     for (Board board : boardList) {
       if (!board.getTitle().contains(input) &&
@@ -21,7 +22,6 @@ public class BoardSearchHandler extends AbstractBoardHandler {
           !board.getWriter().getName().contains(input)) {
         continue;
       }
-
       System.out.printf("%d, %s, %s, %s, %d, %d\n", 
           board.getNo(), 
           board.getTitle(), 

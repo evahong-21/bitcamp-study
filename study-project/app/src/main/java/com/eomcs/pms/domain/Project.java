@@ -20,6 +20,33 @@ public class Project {
         + startDate + ", endDate=" + endDate + ", owner=" + owner + ", members=" + members
         + ", tasks=" + tasks + "]";
   }
+
+  @Override
+  public String toCsvString() {
+    return String.format("%d,%s,%s,%s,%s,%s,%s",
+        this.getNo(),
+        this.getTitle(),
+        this.getContent(),
+        this.getStartDate(),
+        this.getEndDate(),
+        this.getOwner(),
+        this.getMembers(),
+        this.getT);
+  }
+
+  @Override
+  public void loadCsv(String csv) {
+    String[] values = csv.split(",");
+
+    this.setNo(Integer.valueOf(values[0]));
+    this.setName(values[1]);
+    this.setEmail(values[2]);
+    this.setPassword(values[3]);
+    this.setPhoto(values[4]);
+    this.setTel(values[5]);
+    this.setRegisteredDate(Date.valueOf(values[6]));
+  }
+
   public int getNo() {
     return no;
   }
@@ -84,7 +111,6 @@ public class Project {
     return names.toString();
   }
 
-
   public Task findTaskByNo(int taskNo) {
     for (Task task : this.tasks) {
       if (task.getNo() == taskNo) {
@@ -93,5 +119,4 @@ public class Project {
     }
     return null;
   }
-
 }
