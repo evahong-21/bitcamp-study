@@ -8,12 +8,13 @@ import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.PrintWriter;
+import java.lang.reflect.Type;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import com.eomcs.csv.CsvValue;
 import com.eomcs.menu.Menu;
 import com.eomcs.menu.MenuGroup;
 import com.eomcs.pms.domain.Board;
@@ -29,6 +30,7 @@ import com.eomcs.pms.handler.BoardListHandler;
 import com.eomcs.pms.handler.BoardSearchHandler;
 import com.eomcs.pms.handler.BoardUpdateHandler;
 import com.eomcs.pms.handler.Command;
+import com.eomcs.pms.handler.CommandRequest;
 import com.eomcs.pms.handler.MemberAddHandler;
 import com.eomcs.pms.handler.MemberDeleteHandler;
 import com.eomcs.pms.handler.MemberDetailHandler;
@@ -47,6 +49,8 @@ import com.eomcs.pms.handler.TaskDetailHandler;
 import com.eomcs.pms.handler.TaskListHandler;
 import com.eomcs.pms.handler.TaskUpdateHandler;
 import com.eomcs.util.Prompt;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 
 public class App {
@@ -75,7 +79,12 @@ public class App {
     @Override
     public void execute() {
       Command command = commandMap.get(menuId);
-      command.execute();
+      try {
+        command.execute(new CommandRequest(commandMap));
+      } catch (Exception e) {
+        System.out.printf("%s 명령을 실행하는 중 오류 발생!\n", menuId);
+        e.printStackTrace();
+      }
     }
   }
 
@@ -87,9 +96,10 @@ public class App {
   public App() {
     commandMap.put("/board/add", new BoardAddHandler(boardList));
     commandMap.put("/board/list", new BoardListHandler(boardList));
-    commandMap.put("/board/detail", new BoardDetailHandler(boardList));
+
     commandMap.put("/board/update", new BoardUpdateHandler(boardList));
     commandMap.put("/board/delete", new BoardDeleteHandler(boardList));
+    commandMap.put("/board/detail", new BoardDetailHandler(boardList));
     commandMap.put("/board/search", new BoardSearchHandler(boardList));
 
     commandMap.put("/member/add", new MemberAddHandler(memberList));
@@ -116,48 +126,61 @@ public class App {
   }
 
   void service() {
-    loadObjects("board.csv", boardList, Board.class);
+    loadObjects("board.json", boardList, Board.class);
+    loadObjects("member.json", memberList, Member.class);
+    loadObjects("project.json", projectList, Project.class);
+
     createMainMenu().execute();
     Prompt.close();
-    saveObjects("board.csv", boardList);
+
+    saveObjects("board.json", boardList);
+    saveObjects("member.json", memberList);
+    saveObjects("project.json", projectList);
   }
 
-  private <E extends CsvValue> void loadObjects(
-      String filepath,
-      List<E> list,
-      Class<E> domainType) {
-    // CSV 형식으로 저장된 게시글 데이터를 파일에서 읽어 객체에 담는다. 
+  // JSON 형식으로 저장된 데이터를 읽어서 객체로 만든다.
+  private <E> void loadObjects(
+      String filepath, // 데이터를 읽어 올 파일 경로 
+      List<E> list, // 로딩한 데이터를 객체로 만든 후 저장할 목록 
+      Class<E> domainType // 생성할 객체의 타입정보
+      ) {
+
     try (BufferedReader in = new BufferedReader(
-        new FileReader("board.csv", Charset.forName("UTF-8")))) {
+        new FileReader(filepath, Charset.forName("UTF-8")))) {
 
-      String csvStr = null;
-      while ((csvStr = in.readLine()) != null) {
-
-        E obj = domainType.getConstructor().newInstance();
-
-        obj.loadCsv(csvStr);
-
-        list.add(obj);
+      StringBuilder strBuilder = new StringBuilder();
+      String str;
+      while ((str = in.readLine()) != null) { // 파일 전체를 읽는다.
+        strBuilder.append(str);
       }
-      System.out.println("게시글 데이터 로딩 완료!");
+
+      // StringBuilder로 읽어 온 JSON 문자열을 객체로 바꾼다.
+      Type type = TypeToken.getParameterized(Collection.class, domainType).getType(); 
+      Collection<E> collection = new Gson().fromJson(strBuilder.toString(), type);
+
+      // JSON 데이터로 읽어온 목록을 파라미터로 받은 List 에 저장한다.
+      list.addAll(collection);
+
+      System.out.printf("%s 데이터 로딩 완료!\n", filepath);
 
     } catch (Exception e) {
-      System.out.println("게시글 데이터 로딩 오류!");
+      System.out.printf("%s 데이터 로딩 오류!\n", filepath);
     }
   }
 
-  private void saveObjects(String filepath, List<? extends CsvValue> list) {
-    // 게시글 데이터를 CSV 형식으로 출력한다.
+  // 객체를 JSON 형식으로 저장한다.
+  private void saveObjects(String filepath, List<?> list) {
     try (PrintWriter out = new PrintWriter(
         new BufferedWriter(
             new FileWriter(filepath, Charset.forName("UTF-8"))))) {
-      for (CsvValue obj : list) {
-        out.println(obj.toCsvString());
-      }
-      System.out.println("게시글 데이터 출력 완료!");
+
+      out.print(new Gson().toJson(list));
+
+      System.out.printf("%s 데이터 출력 완료!\n", filepath);
 
     } catch (Exception e) {
-      System.out.println("게시글 데이터 출력 오류!");
+      System.out.printf("%s 데이터 출력 오류!\n", filepath);
+      e.printStackTrace();
     }
   }
 
@@ -183,8 +206,8 @@ public class App {
     boardMenu.add(new MenuItem("등록", ACCESS_GENERAL, "/board/add"));
     boardMenu.add(new MenuItem("목록", "/board/list"));
     boardMenu.add(new MenuItem("상세보기", "/board/detail"));
-    boardMenu.add(new MenuItem("변경", ACCESS_GENERAL, "/board/update"));
-    boardMenu.add(new MenuItem("삭제", ACCESS_GENERAL, "/board/delete"));
+    //    boardMenu.add(new MenuItem("변경", ACCESS_GENERAL, "/board/update"));
+    //    boardMenu.add(new MenuItem("삭제", ACCESS_GENERAL, "/board/delete"));
     boardMenu.add(new MenuItem("검색", "/board/search"));
     return boardMenu;
   }
