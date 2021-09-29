@@ -9,10 +9,18 @@ import java.util.List;
 import com.eomcs.context.ApplicationContextListener;
 import com.eomcs.menu.Menu;
 import com.eomcs.menu.MenuGroup;
+import com.eomcs.pms.handler.BoardAddHandler;
+import com.eomcs.pms.handler.BoardDeleteHandler;
+import com.eomcs.pms.handler.BoardDetailHandler;
+import com.eomcs.pms.handler.BoardListHandler;
+import com.eomcs.pms.handler.BoardUpdateHandler;
 import com.eomcs.pms.handler.Command;
 import com.eomcs.pms.handler.CommandRequest;
 import com.eomcs.pms.handler.MemberAddHandler;
+import com.eomcs.pms.handler.MemberDeleteHandler;
+import com.eomcs.pms.handler.MemberDetailHandler;
 import com.eomcs.pms.handler.MemberListHandler;
+import com.eomcs.pms.handler.MemberUpdateHandler;
 import com.eomcs.pms.listener.AppInitListener;
 import com.eomcs.request.RequestAgent;
 import com.eomcs.util.Prompt;
@@ -85,7 +93,16 @@ public class ClientApp {
     //Command 객체 준비
     commandMap.put("/member/add", new MemberAddHandler(requestAgent));
     commandMap.put("/member/list", new MemberListHandler(requestAgent));
+    commandMap.put("/member/detail", new MemberDetailHandler(requestAgent));
+    commandMap.put("/member/update", new MemberUpdateHandler(requestAgent));
+    commandMap.put("/member/delete", new MemberDeleteHandler(requestAgent));
 
+    commandMap.put("/board/add", new BoardAddHandler(requestAgent));
+    commandMap.put("/board/list", new BoardListHandler(requestAgent));
+    commandMap.put("/board/detail", new BoardDetailHandler(requestAgent));
+    commandMap.put("/board/search", new BoardDetailHandler(requestAgent));
+    commandMap.put("/board/update", new BoardUpdateHandler(requestAgent));
+    commandMap.put("/board/delete", new BoardDeleteHandler(requestAgent));
   }
 
 
@@ -111,8 +128,8 @@ public class ClientApp {
     boardMenu.add(new MenuItem("등록", ACCESS_GENERAL, "/board/add"));
     boardMenu.add(new MenuItem("목록", "/board/list"));
     boardMenu.add(new MenuItem("상세보기", "/board/detail"));
-    //    boardMenu.add(new MenuItem("변경", ACCESS_GENERAL, "/board/update"));
-    //    boardMenu.add(new MenuItem("삭제", ACCESS_GENERAL, "/board/delete"));
+    boardMenu.add(new MenuItem("변경", ACCESS_GENERAL, "/board/update"));
+    boardMenu.add(new MenuItem("삭제", ACCESS_GENERAL, "/board/delete"));
     boardMenu.add(new MenuItem("검색", "/board/search"));
     return boardMenu;
   }
@@ -122,8 +139,8 @@ public class ClientApp {
     memberMenu.add(new MenuItem("등록", ACCESS_GENERAL, "/member/add"));
     memberMenu.add(new MenuItem("목록", "/member/list"));
     memberMenu.add(new MenuItem("상세보기", "/member/detail"));
-    //    memberMenu.add(new MenuItem("변경", ACCESS_GENERAL, "/member/update"));
-    //    memberMenu.add(new MenuItem("삭제", ACCESS_GENERAL, "/member/delete"));
+    memberMenu.add(new MenuItem("변경", ACCESS_GENERAL, "/member/update"));
+    memberMenu.add(new MenuItem("삭제", ACCESS_GENERAL, "/member/delete"));
     return memberMenu;
   }
 
@@ -155,11 +172,13 @@ public class ClientApp {
     adminMenu.add(new MenuItem("게시글 등록", "/board/add"));
     return adminMenu;
   }
-  void service() {
+  void service() throws Exception {
 
     notifyOnApplicationStarted();
 
     createMainMenu().execute();
+    requestAgent.request("quit", null);
+    System.out.println(requestAgent.getObject(String.class));
     Prompt.close();
 
     notifyOnApplicationEnded();
@@ -172,32 +191,6 @@ public class ClientApp {
     app.addApplicationContextListener(new AppInitListener());
     app.service();
 
-    //    while (true) {
-    //      String input = Prompt.inputString("명령> ");
-    //
-    //      if (input.equals("/board/add")) {
-    //        addBoard();
-    //
-    //      } else if (input.equals("/board/detail")) {
-    //        detailBoard();
-    //
-    //      } else {
-    //        requestAgent.request(input, null);
-    //
-    //        if (requestAgent.getStatus().equals(RequestAgent.SUCCESS)) {
-    //          String result = requestAgent.getObject(String.class);
-    //          System.out.println(">>> " + result);
-    //        } else {
-    //          System.out.println("명령 요청 실패!");
-    //        }
-    //      }
-    //
-    //      if (input.equalsIgnoreCase("quit")) {
-    //        break;
-    //      }
-    //    }
-    //
-    //    requestAgent.close();
     Prompt.close();
   }
 }

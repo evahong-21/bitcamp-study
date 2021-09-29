@@ -59,7 +59,7 @@ public class RequestAgent implements AutoCloseable {
     return new Gson().fromJson(jsonData, type);
   }
 
-  public <E> Collection getObjects(Class<E> elementType) {
+  public <E> Collection<E> getObjects(Class<E> elementType) {
     Type type = TypeToken.getParameterized(Collection.class, elementType).getType(); 
     return new Gson().fromJson(jsonData, type);
   }

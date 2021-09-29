@@ -47,7 +47,7 @@ public class RequestProcessor implements AutoCloseable {
         sendResult(response); // 나가야하므로 만들어줌.
         break;
 
-      } else if (command.startsWith("/board/")) {
+      } else if (command.startsWith("board.")) {
         boardTable.execute(request, response);
 
       } else if (command.startsWith("member.")) {
@@ -59,7 +59,11 @@ public class RequestProcessor implements AutoCloseable {
       }
       sendResult(response); // 클라이언트에게 클라이언트를 보냄.
     }
+    // 데이터를 파일에 저장한다.
+    memberTable.save();
+    boardTable.save();
   }
+
   private void sendResult(Response response) {
     out.println(response.status);
     if (response.getValue() != null) {

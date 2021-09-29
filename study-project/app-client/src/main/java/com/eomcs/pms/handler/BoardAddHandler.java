@@ -23,16 +23,14 @@ public class BoardAddHandler implements Command {
     board.setTitle(Prompt.inputString("제목? "));
     board.setContent(Prompt.inputString("내용? "));
 
-    //    board.setWriter(AuthLoginHandler.getLoginUser());
+    board.setWriter(AuthLoginHandler.getLoginUser());
     board.setRegisteredDate(new Date(System.currentTimeMillis()));
 
-    requestAgent.request("/board/add", board);
+    requestAgent.request("board.insert", board);
+    if (requestAgent.getStatus().equals(RequestAgent.SUCCESS)) {
+      System.out.println("게시글을 등록하였습니다.");
+    } else {
+      System.out.println("게시글 등록 실패!");
+    }
   }
 }
-
-
-
-
-
-
-
