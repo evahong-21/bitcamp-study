@@ -5,35 +5,33 @@ import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.PrintWriter;
+import java.lang.reflect.Type;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 // 역할
-// - 게시글 데이터를 저장하고 조회하는 일을 한다.
-
-public abstract class DataTable<T> {
+// - 데이터를 처리하는 클래스가 공통으로 가져야할 필드나 메서드를 정의한다.
+// 
+public abstract class JsonDataTable<T> {
 
   protected List<T> list = new ArrayList<>();
-  String filename;
+  private Class<T> elementType;
+  private String filename;
 
-  public DataTable(String filename) {
+  public JsonDataTable(String filename, Class<T> elementType) {
     this.filename = filename;
-    // JSON 파일에서 데이터를 로딩한다.
+    this.elementType = elementType;
     loadObjects();
-
   }
 
   public void save() {
-    // 데이터를 JSON 형식으로 파일에 저장한다.
     saveObjects();
-
   }
 
-  // JSON 형식으로 저장된 데이터를 읽어서 객체로 만든다.
-  @SuppressWarnings("unchecked")
   private void loadObjects() {
 
     try (BufferedReader in = new BufferedReader(
@@ -45,12 +43,8 @@ public abstract class DataTable<T> {
         strBuilder.append(str);
       }
 
-
-      // StringBuilder로 읽어 온 JSON 문자열을 객체로 바꾼다.
-      //      Type type = TypeToken.getParameterized(Collection.class, domainType).getType(); 
-      Collection<T> collection = new Gson().fromJson(strBuilder.toString(), list.getClass());
-
-      // JSON 데이터로 읽어온 목록을 파라미터로 받은 List 에 저장한다.
+      Type type = TypeToken.getParameterized(Collection.class, elementType).getType(); 
+      Collection<T> collection = new Gson().fromJson(strBuilder.toString(), type);
       list.addAll(collection);
 
       System.out.printf("%s 데이터 로딩 완료!\n", filename);
@@ -60,7 +54,6 @@ public abstract class DataTable<T> {
     }
   }
 
-  // 객체를 JSON 형식으로 저장한다.
   private void saveObjects() {
     try (PrintWriter out = new PrintWriter(
         new BufferedWriter(
@@ -75,4 +68,19 @@ public abstract class DataTable<T> {
       e.printStackTrace();
     }
   }
+
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+

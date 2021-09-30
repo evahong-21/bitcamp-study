@@ -8,6 +8,7 @@ import com.eomcs.util.Prompt;
 public class BoardUpdateHandler implements Command {
 
   RequestAgent requestAgent;
+
   public BoardUpdateHandler(RequestAgent requestAgent) {
     this.requestAgent = requestAgent;
   }
@@ -15,11 +16,11 @@ public class BoardUpdateHandler implements Command {
   @Override
   public void execute(CommandRequest request) throws Exception {
     System.out.println("[게시글 변경]");
-    int no = Prompt.inputInt("번호? ");
-    //    int no = (int) request.getAttribute("no");
+    int no = (int) request.getAttribute("no");
 
-    HashMap<String, String> params = new HashMap<>();
+    HashMap<String,String> params = new HashMap<>();
     params.put("no", String.valueOf(no));
+
     requestAgent.request("board.selectOne", params);
 
     if (requestAgent.getStatus().equals(RequestAgent.FAIL)) {
@@ -29,10 +30,10 @@ public class BoardUpdateHandler implements Command {
 
     Board board = requestAgent.getObject(Board.class);
 
-    //    if (board.getWriter().getNo() != AuthLoginHandler.getLoginUser().getNo()) {
-    //      System.out.println("변경 권한이 없습니다.");
-    //      return;
-    //    }
+    if (board.getWriter().getNo() != AuthLoginHandler.getLoginUser().getNo()) {
+      System.out.println("변경 권한이 없습니다.");
+      return;
+    }
 
     String title = Prompt.inputString(String.format("제목(%s)? ", board.getTitle()));
     String content = Prompt.inputString(String.format("내용(%s)? ", board.getContent()));
@@ -47,11 +48,13 @@ public class BoardUpdateHandler implements Command {
     board.setContent(content);
 
     requestAgent.request("board.update", board);
+
     if (requestAgent.getStatus().equals(RequestAgent.FAIL)) {
       System.out.println("게시글 변경 실패!");
       System.out.println(requestAgent.getObject(String.class));
       return;
     }
+
     System.out.println("게시글을 변경하였습니다.");
   }
 }

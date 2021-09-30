@@ -8,6 +8,7 @@ import com.eomcs.util.Prompt;
 public class MemberAddHandler implements Command {
 
   RequestAgent requestAgent;
+
   public MemberAddHandler(RequestAgent requestAgent) {
     this.requestAgent = requestAgent;
   }
@@ -27,8 +28,9 @@ public class MemberAddHandler implements Command {
     member.setRegisteredDate(new Date(System.currentTimeMillis()));
 
     requestAgent.request("member.insert", member);
+
     if (requestAgent.getStatus().equals(RequestAgent.SUCCESS)) {
-      System.out.println("회원을 등록하였습니다.");
+      System.out.println("회원을 등록했습니다.");
     } else {
       System.out.println("회원 등록 실패!");
     }

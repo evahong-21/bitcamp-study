@@ -8,18 +8,19 @@ import com.eomcs.util.Prompt;
 public class MemberDetailHandler implements Command {
 
   RequestAgent requestAgent;
+
   public MemberDetailHandler(RequestAgent requestAgent) {
     this.requestAgent = requestAgent;
   }
-
 
   @Override
   public void execute(CommandRequest request) throws Exception {
     System.out.println("[회원 상세보기]");
     int no = Prompt.inputInt("번호? ");
 
-    HashMap<String, String> params = new HashMap<>();
+    HashMap<String,String> params = new HashMap<>();
     params.put("no", String.valueOf(no));
+
     requestAgent.request("member.selectOne", params);
 
     if (requestAgent.getStatus().equals(RequestAgent.FAIL)) {

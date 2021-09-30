@@ -8,6 +8,7 @@ import com.eomcs.util.Prompt;
 public class BoardDetailHandler implements Command {
 
   RequestAgent requestAgent;
+
   public BoardDetailHandler(RequestAgent requestAgent) {
     this.requestAgent = requestAgent;
   }
@@ -17,14 +18,16 @@ public class BoardDetailHandler implements Command {
     System.out.println("[게시글 상세보기]");
     int no = Prompt.inputInt("번호? ");
 
-    HashMap<String, String> params = new HashMap<>();
+    HashMap<String,String> params = new HashMap<>();
     params.put("no", String.valueOf(no));
+
     requestAgent.request("board.selectOne", params);
 
     if (requestAgent.getStatus().equals(RequestAgent.FAIL)) {
       System.out.println("해당 번호의 게시글이 없습니다.");
       return;
     }
+
     Board board = requestAgent.getObject(Board.class);
 
     System.out.printf("제목: %s\n", board.getTitle());
@@ -42,8 +45,6 @@ public class BoardDetailHandler implements Command {
     //      return;
     //    }
 
-    // BoardUpdateHandler나 BoardDeleteHandler를 실행할 때 게시글 번호를 사용할 수 있도록 
-    // CommandRequest에 보관한다.
     request.setAttribute("no", no);
 
     while (true) {

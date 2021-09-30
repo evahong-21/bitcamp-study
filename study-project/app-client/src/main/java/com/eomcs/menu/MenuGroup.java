@@ -18,9 +18,9 @@ public class MenuGroup extends Menu {
 
   boolean disablePrevMenu;
   String prevMenuTitle = "이전 메뉴";
+
   // 메뉴 목록을 출력할 때 출력 여부를 결정할 객체를 보관한다.
   MenuFilter menuFilter;
-
 
   // 이전으로 이동시키는 메뉴를 표현하기 위해 만든 클래스
   private static class PrevMenu extends Menu {
@@ -129,7 +129,8 @@ public class MenuGroup extends Menu {
     ArrayList<Menu> menuList = new ArrayList<>();
     for (Menu menu : childs) {
       if (menuFilter != null && !menuFilter.accept(menu)) {
-        // 메뉴 필터가 있을때 그 메뉴 필터에서 승인하지 않는다면 출력할 메뉴에 포함시키지 않는다.
+        // 메뉴 필터가 있을 때, 그 메뉴 필터에서 승인하지 않는다면
+        // 출력할 메뉴에 포함시키지 않는다.
         continue;
       }
       menuList.add(menu);
@@ -166,7 +167,7 @@ public class MenuGroup extends Menu {
     }
 
     if (menuNo == 0 && !disablePrevMenu) {
-      return prevMenu; // 호출한 쪽에 '이전 메뉴' 선택을 알리게 위해 
+      return prevMenu; // 호출한 쪽에 '이전 메뉴' 선택을 알리기 위해 
     } 
 
     return menuList.get(menuNo - 1);

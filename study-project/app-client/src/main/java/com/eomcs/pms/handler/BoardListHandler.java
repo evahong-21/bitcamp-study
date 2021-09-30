@@ -7,6 +7,7 @@ import com.eomcs.request.RequestAgent;
 public class BoardListHandler implements Command {
 
   RequestAgent requestAgent;
+
   public BoardListHandler(RequestAgent requestAgent) {
     this.requestAgent = requestAgent;
   }
@@ -16,8 +17,9 @@ public class BoardListHandler implements Command {
     System.out.println("[게시글 목록]");
 
     requestAgent.request("board.selectList", null);
+
     if (requestAgent.getStatus().equals(RequestAgent.FAIL)) {
-      System.out.println("목록조회 실패!");
+      System.out.println("목록 조회 실패!");
       return;
     }
 

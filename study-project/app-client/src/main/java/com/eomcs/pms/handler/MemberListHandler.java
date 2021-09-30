@@ -7,6 +7,7 @@ import com.eomcs.request.RequestAgent;
 public class MemberListHandler implements Command {
 
   RequestAgent requestAgent;
+
   public MemberListHandler(RequestAgent requestAgent) {
     this.requestAgent = requestAgent;
   }
@@ -20,7 +21,7 @@ public class MemberListHandler implements Command {
     if (requestAgent.getStatus().equals(RequestAgent.FAIL)) {
       System.out.println("목록 조회 실패!");
       return;
-    } 
+    }
 
     Collection<Member> memberList = requestAgent.getObjects(Member.class);
 
