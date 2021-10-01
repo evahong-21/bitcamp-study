@@ -1,5 +1,6 @@
 package com.eomcs.pms.table;
 
+import java.util.List;
 import com.eomcs.pms.domain.Project;
 import com.eomcs.pms.domain.Task;
 import com.eomcs.server.DataProcessor;
@@ -22,11 +23,10 @@ public class ProjectTable extends JsonDataTable<Project> implements DataProcesso
       case "project.selectList": selectList(request, response); break;
       case "project.selectOne": selectOne(request, response); break;
       case "project.update": update(request, response); break;
-      case "project.task.update": updatetask(request, response); break;
       case "project.delete": delete(request, response); break;
-      case "project.task.delete": deletetask(request, response); break;
-      case "project.task.insert" : inserttask(request, response); break;
-
+      case "project.task.insert": insertTask(request, response); break;
+      case "project.task.update": updateTask(request, response); break;
+      case "project.task.delete": deleteTask(request, response); break;
       default:
         response.setStatus(Response.FAIL);
         response.setValue("해당 명령을 지원하지 않습니다.");
@@ -36,13 +36,6 @@ public class ProjectTable extends JsonDataTable<Project> implements DataProcesso
   private void insert(Request request, Response response) throws Exception {
     Project project = request.getObject(Project.class);
     list.add(project);
-    response.setStatus(Response.SUCCESS);
-  }
-
-  private void inserttask(Request request, Response response) throws Exception {
-    Task task = request.getObject(Task.class);
-    Project project = findByNo(task.getProject().getNo());
-    project.getTasks().add(task);
     response.setStatus(Response.SUCCESS);
   }
 
@@ -78,28 +71,6 @@ public class ProjectTable extends JsonDataTable<Project> implements DataProcesso
     response.setStatus(Response.SUCCESS);
   }
 
-  private void updatetask(Request request, Response response) throws Exception {
-    Task task = request.getObject(Task.class);
-    Project m = findByNo(task.getProject().getNo());
-
-    if (m != null) {
-      response.setStatus(Response.SUCCESS);
-      response.setValue(m);
-    } else {
-      response.setStatus(Response.FAIL);
-      response.setValue("해당 번호의 프로젝트를 찾을 수 없습니다.");
-    }
-    int index = indexOf(m.getNo());
-    if (index == -1) {
-      response.setStatus(Response.FAIL);
-      response.setValue("해당 번호의 프로젝트를 찾을 수 없습니다.");
-      return;
-    }
-    int taskIndex = indexOfTask(m, task.getNo());
-    list.get(index).getTasks().set(taskIndex, task);
-    response.setStatus(Response.SUCCESS);
-  }
-
   private void delete(Request request, Response response) throws Exception {
     int no = Integer.parseInt(request.getParameter("no"));
     int index = indexOf(no);
@@ -111,28 +82,6 @@ public class ProjectTable extends JsonDataTable<Project> implements DataProcesso
     }
 
     list.remove(index);
-    response.setStatus(Response.SUCCESS);
-  }
-
-  private void deletetask(Request request, Response response) throws Exception {
-    Task task = request.getObject(Task.class);
-    Project m = findByNo(task.getProject().getNo());
-
-    if (m != null) {
-      response.setStatus(Response.SUCCESS);
-      response.setValue(m);
-    } else {
-      response.setStatus(Response.FAIL);
-      response.setValue("해당 번호의 프로젝트를 찾을 수 없습니다.");
-    }
-    int index = indexOf(m.getNo());
-    if (index == -1) {
-      response.setStatus(Response.FAIL);
-      response.setValue("해당 번호의 프로젝트를 찾을 수 없습니다.");
-      return;
-    }
-    int taskIndex = indexOfTask(m, task.getNo());
-    list.get(index).getTasks().remove(taskIndex);
     response.setStatus(Response.SUCCESS);
   }
 
@@ -153,13 +102,51 @@ public class ProjectTable extends JsonDataTable<Project> implements DataProcesso
     }
     return -1;
   }
-  private int indexOfTask(Project project, int taskNo) {
-    int i=0;
-    for (Task task : project.getTasks()) {
-      if (task.getNo()==taskNo) {
+
+  private void insertTask(Request request, Response response) throws Exception {
+    Task task = request.getObject(Task.class);
+    Project project = findByNo(task.getProject().getNo());
+    project.getTasks().add(task);
+    response.setStatus(Response.SUCCESS);
+  }
+
+  private void updateTask(Request request, Response response) throws Exception {
+    Task task = request.getObject(Task.class);
+
+    Project project = findByNo(task.getProject().getNo());
+
+    int index = indexOfTask(task.getNo(), project.getTasks());
+    if (index == -1) {
+      response.setStatus(Response.FAIL);
+      response.setValue("해당 번호의 작업을 찾을 수 없습니다.");
+      return;
+    }
+
+    project.getTasks().set(index, task);
+    response.setStatus(Response.SUCCESS);
+  }
+
+  private void deleteTask(Request request, Response response) throws Exception {
+    int taskNo = Integer.parseInt(request.getParameter("taskNo"));
+    int projectNo = Integer.parseInt(request.getParameter("projectNo"));
+
+    Project project = findByNo(projectNo);
+
+    int index = indexOfTask(taskNo, project.getTasks());
+    if (index == -1) {
+      response.setStatus(Response.FAIL);
+      response.setValue("해당 번호의 작업을 찾을 수 없습니다.");
+      return;
+    }
+
+    project.getTasks().remove(index);
+    response.setStatus(Response.SUCCESS);
+  }
+
+  private int indexOfTask(int taskNo, List<Task> taskList) {
+    for (int i = 0; i < taskList.size(); i++) {
+      if (taskList.get(i).getNo() == taskNo) {
         return i;
-      } else {
-        i++;
       }
     }
     return -1;

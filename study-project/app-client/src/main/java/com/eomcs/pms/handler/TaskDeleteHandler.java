@@ -1,13 +1,18 @@
 package com.eomcs.pms.handler;
 
+import java.util.HashMap;
 import com.eomcs.pms.domain.Task;
 import com.eomcs.request.RequestAgent;
 import com.eomcs.util.Prompt;
 
 public class TaskDeleteHandler implements Command {
+
   RequestAgent requestAgent;
-  public TaskDeleteHandler(RequestAgent requestAgent) {
+  ProjectPrompt projectPrompt;
+
+  public TaskDeleteHandler(RequestAgent requestAgent, ProjectPrompt projectPrompt) {
     this.requestAgent = requestAgent;
+    this.projectPrompt = projectPrompt;
   }
 
   @Override
@@ -22,12 +27,18 @@ public class TaskDeleteHandler implements Command {
       return;
     }
 
-    requestAgent.request("project.task.delete", task);
-    if (requestAgent.getStatus().equals(RequestAgent.FAIL)) {
-      System.out.println(requestAgent.getObject(String.class));
-      return;
+    HashMap<String,String> params = new HashMap<>();
+    params.put("taskNo", String.valueOf(task.getNo()));
+    params.put("projectNo", String.valueOf(task.getProject().getNo()));
+
+    requestAgent.request("project.task.delete", params);
+
+    if (requestAgent.getStatus().equals(RequestAgent.SUCCESS)) {
+      System.out.println("작업를 삭제하였습니다.");
+    } else {
+      System.out.println("작업 삭제 실패!");
     }
-    System.out.println("작업를 삭제하였습니다.");
+
   }
 }
 

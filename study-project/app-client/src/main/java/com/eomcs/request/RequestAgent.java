@@ -12,7 +12,7 @@ import com.google.gson.reflect.TypeToken;
 // 역할
 // - 통신 프로토콜에 맞춰 서버에게 요청을 전달하고 응답을 받는 일을 한다.
 //
-public class RequestAgent  {
+public class RequestAgent {
 
   public static final String SUCCESS = "success";
   public static final String FAIL = "fail";
@@ -35,7 +35,6 @@ public class RequestAgent  {
 
       out.println(command);
 
-      // - 객체를 JSON으로 변환하여 서버에 보낸다.
       if (value != null) {
         out.println(new Gson().toJson(value));
       } else {
@@ -46,7 +45,6 @@ public class RequestAgent  {
       // 서버에서 응답을 받는다.
       status = in.readLine();
       jsonData = in.readLine();
-
     }
   }
 
@@ -64,13 +62,6 @@ public class RequestAgent  {
     Type type = TypeToken.getParameterized(Collection.class, elementType).getType(); 
     return new Gson().fromJson(jsonData, type);
   }
-
-  //  @Override
-  //  public void close() {
-  //    try {out.close();} catch (Exception e) {}
-  //    try {in.close();} catch (Exception e) {}
-  //    try {socket.close();} catch (Exception e) {}
-  //  }
 }
 
 

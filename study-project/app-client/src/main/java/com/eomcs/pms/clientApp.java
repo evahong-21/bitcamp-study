@@ -10,6 +10,7 @@ import com.eomcs.context.ApplicationContextListener;
 import com.eomcs.menu.Menu;
 import com.eomcs.menu.MenuFilter;
 import com.eomcs.menu.MenuGroup;
+import com.eomcs.pms.dao.impl.NetBoardDao;
 import com.eomcs.pms.handler.AuthLoginHandler;
 import com.eomcs.pms.handler.AuthLogoutHandler;
 import com.eomcs.pms.handler.AuthUserInfoHandler;
@@ -102,10 +103,11 @@ public class ClientApp {
   }
 
   public ClientApp() throws Exception {
-
     // 서버와 통신을 담당할 객체 준비
     requestAgent = new RequestAgent("127.0.0.1", 8888);
 
+    //    BoardDao boardDao = new ListBoardDao();
+    NetBoardDao boardDao = new NetBoardDao(requestAgent);
     // Command 객체 준비
     commandMap.put("/member/add", new MemberAddHandler(requestAgent));
     commandMap.put("/member/list", new MemberListHandler(requestAgent));
@@ -113,12 +115,12 @@ public class ClientApp {
     commandMap.put("/member/update", new MemberUpdateHandler(requestAgent));
     commandMap.put("/member/delete", new MemberDeleteHandler(requestAgent));
 
-    commandMap.put("/board/add", new BoardAddHandler(requestAgent));
-    commandMap.put("/board/list", new BoardListHandler(requestAgent));
-    commandMap.put("/board/detail", new BoardDetailHandler(requestAgent));
-    commandMap.put("/board/update", new BoardUpdateHandler(requestAgent));
-    commandMap.put("/board/delete", new BoardDeleteHandler(requestAgent));
-    commandMap.put("/board/search", new BoardSearchHandler(requestAgent));
+    commandMap.put("/board/add", new BoardAddHandler(boardDao));
+    commandMap.put("/board/list", new BoardListHandler(boardDao));
+    commandMap.put("/board/detail", new BoardDetailHandler(boardDao));
+    commandMap.put("/board/update", new BoardUpdateHandler(boardDao));
+    commandMap.put("/board/delete", new BoardDeleteHandler(boardDao));
+    commandMap.put("/board/search", new BoardSearchHandler(boardDao));
 
     commandMap.put("/auth/login", new AuthLoginHandler(requestAgent));
     commandMap.put("/auth/logout", new AuthLogoutHandler());
@@ -134,11 +136,10 @@ public class ClientApp {
 
     ProjectPrompt projectPrompt = new ProjectPrompt(requestAgent);
     commandMap.put("/task/add", new TaskAddHandler(requestAgent, projectPrompt));
-    commandMap.put("/task/list", new TaskListHandler(requestAgent, projectPrompt));
-    commandMap.put("/task/detail", new TaskDetailHandler(requestAgent, projectPrompt));
-    commandMap.put("/task/update", new TaskUpdateHandler(requestAgent));
-    commandMap.put("/task/delete", new TaskDeleteHandler(requestAgent));
-
+    commandMap.put("/task/list", new TaskListHandler(projectPrompt));
+    commandMap.put("/task/detail", new TaskDetailHandler(projectPrompt));
+    commandMap.put("/task/update", new TaskUpdateHandler(requestAgent, projectPrompt));
+    commandMap.put("/task/delete", new TaskDeleteHandler(requestAgent, projectPrompt));
   }
 
   // MenuGroup에서 사용할 필터를 정의한다.
@@ -176,7 +177,7 @@ public class ClientApp {
   private Menu createMemberMenu() {
     MenuGroup memberMenu = new MenuGroup("회원");
     memberMenu.setMenuFilter(menuFilter);
-    memberMenu.add(new MenuItem("등록", ACCESS_GENERAL, "/member/add"));
+    memberMenu.add(new MenuItem("등록", ACCESS_LOGOUT, "/member/add"));
     memberMenu.add(new MenuItem("목록", "/member/list"));
     memberMenu.add(new MenuItem("상세보기", "/member/detail"));
     return memberMenu;
@@ -216,10 +217,6 @@ public class ClientApp {
     notifyOnApplicationStarted();
 
     createMainMenu().execute();
-
-    // 프로그램의 실행을 끝내면, 서버와의 연결을 끊는다.
-    //    requestAgent.request("quit", null);
-    //    System.out.println(requestAgent.getObject(String.class));
 
     Prompt.close();
 

@@ -2,10 +2,8 @@ package com.eomcs.pms;
 
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.Collection;
 import java.util.HashMap;
 import com.eomcs.pms.table.BoardTable;
-import com.eomcs.pms.table.JsonDataTable;
 import com.eomcs.pms.table.MemberTable;
 import com.eomcs.pms.table.ProjectTable;
 import com.eomcs.server.DataProcessor;
@@ -18,6 +16,7 @@ public class ServerApp {
 
     System.out.println("서버 실행중");
     ServerSocket serverSocket = new ServerSocket(8888);
+
     // RequestProcessor 가 사용할 DataProcessor 맵 준비
     HashMap<String,DataProcessor> dataProcessorMap = new HashMap<String,DataProcessor>();
 
@@ -25,24 +24,22 @@ public class ServerApp {
     dataProcessorMap.put("board.", new BoardTable());
     dataProcessorMap.put("member.", new MemberTable());
     dataProcessorMap.put("project.", new ProjectTable());
-    Socket socket = serverSocket.accept();
-    System.out.println("클라이언트가 접속했음");
 
-    RequestProcessor requestProcessor = new RequestProcessor(socket, dataProcessorMap);
-    requestProcessor.service();
-    requestProcessor.close();
-    System.out.println("클라이언트와 접속 종료");
+    while (true) {
+      Socket socket = serverSocket.accept();
+      System.out.println("클라이언트 접속");
 
-    // => 데이터를 파일에 저장한다.
-    Collection<DataProcessor> dataProcessors = dataProcessorMap.values();
-    for (DataProcessor dataProcessor : dataProcessors) {
-      if (dataProcessor instanceof JsonDataTable) {
-        // 만약 데이터 처리 담당자가 JsonDataTable 의 자손이라면,
-        ((JsonDataTable<?>)dataProcessor).save();
-      }
+      //1) 새 실행 흐름 생성
+      RequestProcessor requestProcessor = new RequestProcessor(socket, dataProcessorMap);
+
+      // 2) 새로 생성한 새 실행 흐름을 시작시킨다.
+      // => run() 이 호출될 것이다.
+      // => 시작시킨 후 즉시 리턴한다. 즉 새로 생성한 실행흐름이 종료될때까지 기다리지 않는다.
+      requestProcessor.start();
+
     }
-    System.out.println("서버 종료");
-    serverSocket.close();
+    //    System.out.println("서버 종료");
+    //    serverSocket.close();
   }
 }
 

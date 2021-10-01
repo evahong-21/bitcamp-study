@@ -8,10 +8,15 @@ import com.eomcs.request.RequestAgent;
 import com.eomcs.util.Prompt;
 
 public class TaskUpdateHandler implements Command {
+
   RequestAgent requestAgent;
-  public TaskUpdateHandler(RequestAgent requestAgent) {
+  ProjectPrompt projectPrompt;
+
+  public TaskUpdateHandler(RequestAgent requestAgent, ProjectPrompt projectPrompt) {
     this.requestAgent = requestAgent;
+    this.projectPrompt = projectPrompt;
   }
+
   @Override
   public void execute(CommandRequest request) throws Exception {
     System.out.println("[작업 변경]");
@@ -21,7 +26,7 @@ public class TaskUpdateHandler implements Command {
 
     String content = Prompt.inputString(String.format("내용(%s)? ", task.getContent()));
     Date deadline = Prompt.inputDate(String.format("마감일(%s)? ", task.getDeadline()));
-    int status = promptStatus(task.getStatus());
+    int status = TaskHandlerHelper.promptStatus(task.getStatus());
 
     Member owner = MemberPrompt.promptMember(
         String.format("담당자(%s)?(취소: 빈 문자열) ", task.getOwner().getName()), 
@@ -43,29 +48,12 @@ public class TaskUpdateHandler implements Command {
     task.setOwner(owner);
 
     requestAgent.request("project.task.update", task);
-    if (requestAgent.getStatus().equals(RequestAgent.FAIL)) {
-      System.out.println(requestAgent.getObject(String.class));
-      return;
-    }
-    System.out.println("작업를 변경하였습니다.");
-  }
-  protected static String getStatusLabel(int status) {
-    switch (status) {
-      case 1: return "진행중";
-      case 2: return "완료";
-      default: return "신규";
-    }
-  }
-  protected static int promptStatus(int status) {
-    if (status == -1) {
-      System.out.println("상태?");
+
+    if (requestAgent.getStatus().equals(RequestAgent.SUCCESS)) {
+      System.out.println("작업를 변경하였습니다.");
     } else {
-      System.out.printf("상태(%s)?\n", getStatusLabel(status));
+      System.out.println("작업 변경 실패!");
     }
-    System.out.println("0: 신규");
-    System.out.println("1: 진행중");
-    System.out.println("2: 완료");
-    return Prompt.inputInt("> ");
   }
 }
 

@@ -3,14 +3,13 @@ package com.eomcs.pms.handler;
 import com.eomcs.pms.domain.Member;
 import com.eomcs.pms.domain.Project;
 import com.eomcs.pms.domain.Task;
-import com.eomcs.request.RequestAgent;
 import com.eomcs.util.Prompt;
 
 public class TaskDetailHandler implements Command {
-  RequestAgent requestAgent;
+
   ProjectPrompt projectPrompt;
-  public TaskDetailHandler(RequestAgent requestAgent, ProjectPrompt projectPrompt) {
-    this.requestAgent = requestAgent;
+
+  public TaskDetailHandler(ProjectPrompt projectPrompt) {
     this.projectPrompt = projectPrompt;
   }
 
@@ -24,7 +23,7 @@ public class TaskDetailHandler implements Command {
       return;
     }
 
-    printTasks(project);
+    TaskHandlerHelper.printTasks(project);
 
     System.out.println("-------------------------------------");
 
@@ -38,13 +37,19 @@ public class TaskDetailHandler implements Command {
 
     System.out.printf("내용: %s\n", task.getContent());
     System.out.printf("마감일: %s\n", task.getDeadline());
-    System.out.printf("상태: %s\n", getStatusLabel(task.getStatus()));
+    System.out.printf("상태: %s\n", TaskHandlerHelper.getStatusLabel(task.getStatus()));
     System.out.printf("담당자: %s\n", task.getOwner().getName());
     System.out.println();
 
     Member loginUser = AuthLoginHandler.getLoginUser(); 
-    if (loginUser == null || (task.getNo() != loginUser.getNo() && !loginUser.getEmail().equals("root@test.com"))) {
+    if (loginUser == null) {
       return;
+    }
+
+    if (!loginUser.getEmail().equals("root@test.com")) {
+      if (project.getOwner().getNo() != loginUser.getNo()) {
+        return;
+      }
     }
 
     request.setAttribute("project", project);
@@ -66,26 +71,6 @@ public class TaskDetailHandler implements Command {
         default:
           System.out.println("명령어가 올바르지 않습니다!");
       }
-    }
-  }
-
-  protected static void printTasks(Project project) {
-    System.out.printf("%s:\n\n", project.getTitle());
-    for (Task task : project.getTasks()) {
-      System.out.printf("%d, %s, %s, %s, %s\n",
-          task.getNo(), 
-          task.getContent(), 
-          task.getDeadline(), 
-          getStatusLabel(task.getStatus()), 
-          task.getOwner().getName());
-    }
-  }
-
-  protected static String getStatusLabel(int status) {
-    switch (status) {
-      case 1: return "진행중";
-      case 2: return "완료";
-      default: return "신규";
     }
   }
 }
