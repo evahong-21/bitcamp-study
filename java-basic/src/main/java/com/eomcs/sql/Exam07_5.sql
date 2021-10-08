@@ -20,7 +20,11 @@ from memb cross join stnt;
 select memb.mno, name, stnt.mno, work, bank
 from memb cross join stnt;
 
-/* 예전 문법 */
+/* 조회 했을때 컬럼명 별명부여*/
+select memb.mno as memb_mno, name, stnt.mno as stnt_mno, work, bank
+from memb cross join stnt;
+
+/* 예전 문법 - 크로스 조인땐 그냥 콤마만 붙임.*/
 select memb.mno, name, stnt.mno, work, bank
 from memb, stnt;
 

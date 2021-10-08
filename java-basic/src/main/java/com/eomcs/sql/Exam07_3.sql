@@ -30,3 +30,6 @@ from room;
 select count(*) cnt
 from room
 where loc='서초';
+
+select count(loc) cnt
+from room;
