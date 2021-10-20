@@ -7,12 +7,13 @@ import com.eomcs.pms.domain.Board;
 
 // 역할
 // - 게시글 데이터를 컬렉션 객체를 이용하여 관리한다.
+//
 public class ListBoardDao implements BoardDao {
   List<Board> list = new ArrayList<>();
 
   @Override
   public void insert(Board board) throws Exception {
-    list.add(board); 
+    list.add(board);
   }
 
   @Override
@@ -63,3 +64,6 @@ public class ListBoardDao implements BoardDao {
     }
   }
 }
+
+
+

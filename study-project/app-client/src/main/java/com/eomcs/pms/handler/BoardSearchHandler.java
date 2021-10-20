@@ -8,6 +8,7 @@ import com.eomcs.util.Prompt;
 public class BoardSearchHandler implements Command {
 
   BoardDao boardDao;
+
   public BoardSearchHandler(BoardDao boardDao) {
     this.boardDao = boardDao;
   }

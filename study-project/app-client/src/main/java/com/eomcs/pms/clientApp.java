@@ -3,13 +3,22 @@ package com.eomcs.pms;
 import static com.eomcs.menu.Menu.ACCESS_ADMIN;
 import static com.eomcs.menu.Menu.ACCESS_GENERAL;
 import static com.eomcs.menu.Menu.ACCESS_LOGOUT;
+import java.sql.Connection;
+import java.sql.DriverManager;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import org.apache.ibatis.io.Resources;
+import org.apache.ibatis.session.SqlSession;
+import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import com.eomcs.context.ApplicationContextListener;
 import com.eomcs.menu.Menu;
 import com.eomcs.menu.MenuFilter;
 import com.eomcs.menu.MenuGroup;
+import com.eomcs.pms.dao.MemberDao;
+import com.eomcs.pms.dao.ProjectDao;
+import com.eomcs.pms.dao.impl.MariadbProjectDao;
+import com.eomcs.pms.dao.impl.MybatisMemberDao;
 import com.eomcs.pms.dao.impl.NetBoardDao;
 import com.eomcs.pms.handler.AuthLoginHandler;
 import com.eomcs.pms.handler.AuthLogoutHandler;
@@ -44,6 +53,8 @@ import com.eomcs.request.RequestAgent;
 import com.eomcs.util.Prompt;
 
 public class ClientApp {
+
+  Connection con;
 
   RequestAgent requestAgent;
 
@@ -103,17 +114,29 @@ public class ClientApp {
   }
 
   public ClientApp() throws Exception {
-    // 서버와 통신을 담당할 객체 준비
-    requestAgent = new RequestAgent("127.0.0.1", 8888);
 
-    //    BoardDao boardDao = new ListBoardDao();
+    // 서버와 통신을 담당할 객체 준비
+    requestAgent = null;
+
+    // DBMS와 연결한다.
+    con = DriverManager.getConnection(
+        "jdbc:mysql://localhost:3306/studydb?user=study&password=1111");
+
+    SqlSession sqlSession = new SqlSessionFactoryBuilder().build(Resources.getResourceAsStream(
+        "com/eomcs/pms/conf/mybatis-config.xml")).openSession();
+
+
+    // 데이터 관리를 담당할 DAO 객체를 준비한다.
     NetBoardDao boardDao = new NetBoardDao(requestAgent);
+    MemberDao memberDao = new MybatisMemberDao(sqlSession);
+    ProjectDao projectDao = new MariadbProjectDao(con);
+
     // Command 객체 준비
-    commandMap.put("/member/add", new MemberAddHandler(requestAgent));
-    commandMap.put("/member/list", new MemberListHandler(requestAgent));
-    commandMap.put("/member/detail", new MemberDetailHandler(requestAgent));
-    commandMap.put("/member/update", new MemberUpdateHandler(requestAgent));
-    commandMap.put("/member/delete", new MemberDeleteHandler(requestAgent));
+    commandMap.put("/member/add", new MemberAddHandler(memberDao));
+    commandMap.put("/member/list", new MemberListHandler(memberDao));
+    commandMap.put("/member/detail", new MemberDetailHandler(memberDao));
+    commandMap.put("/member/update", new MemberUpdateHandler(memberDao));
+    commandMap.put("/member/delete", new MemberDeleteHandler(memberDao));
 
     commandMap.put("/board/add", new BoardAddHandler(boardDao));
     commandMap.put("/board/list", new BoardListHandler(boardDao));
@@ -126,20 +149,20 @@ public class ClientApp {
     commandMap.put("/auth/logout", new AuthLogoutHandler());
     commandMap.put("/auth/userinfo", new AuthUserInfoHandler());
 
-    MemberPrompt memberPrompt = new MemberPrompt(requestAgent);
+    MemberPrompt memberPrompt = new MemberPrompt(memberDao);
 
-    commandMap.put("/project/add", new ProjectAddHandler(requestAgent, memberPrompt));
-    commandMap.put("/project/list", new ProjectListHandler(requestAgent));
-    commandMap.put("/project/detail", new ProjectDetailHandler(requestAgent));
-    commandMap.put("/project/update", new ProjectUpdateHandler(requestAgent, memberPrompt));
-    commandMap.put("/project/delete", new ProjectDeleteHandler(requestAgent));
+    commandMap.put("/project/add", new ProjectAddHandler(projectDao, memberPrompt));
+    commandMap.put("/project/list", new ProjectListHandler(projectDao));
+    commandMap.put("/project/detail", new ProjectDetailHandler(projectDao));
+    commandMap.put("/project/update", new ProjectUpdateHandler(projectDao, memberPrompt));
+    commandMap.put("/project/delete", new ProjectDeleteHandler(projectDao));
 
-    ProjectPrompt projectPrompt = new ProjectPrompt(requestAgent);
-    commandMap.put("/task/add", new TaskAddHandler(requestAgent, projectPrompt));
+    ProjectPrompt projectPrompt = new ProjectPrompt(projectDao);
+    commandMap.put("/task/add", new TaskAddHandler(projectDao, projectPrompt));
     commandMap.put("/task/list", new TaskListHandler(projectPrompt));
     commandMap.put("/task/detail", new TaskDetailHandler(projectPrompt));
-    commandMap.put("/task/update", new TaskUpdateHandler(requestAgent, projectPrompt));
-    commandMap.put("/task/delete", new TaskDeleteHandler(requestAgent, projectPrompt));
+    commandMap.put("/task/update", new TaskUpdateHandler(projectDao, projectPrompt));
+    commandMap.put("/task/delete", new TaskDeleteHandler(projectDao, projectPrompt));
   }
 
   // MenuGroup에서 사용할 필터를 정의한다.
@@ -177,7 +200,7 @@ public class ClientApp {
   private Menu createMemberMenu() {
     MenuGroup memberMenu = new MenuGroup("회원");
     memberMenu.setMenuFilter(menuFilter);
-    memberMenu.add(new MenuItem("등록", ACCESS_LOGOUT, "/member/add"));
+    memberMenu.add(new MenuItem("등록", ACCESS_GENERAL, "/member/add"));
     memberMenu.add(new MenuItem("목록", "/member/list"));
     memberMenu.add(new MenuItem("상세보기", "/member/detail"));
     return memberMenu;
@@ -222,6 +245,8 @@ public class ClientApp {
 
     notifyOnApplicationEnded();
 
+    // DBMS와 연결을 끊는다.
+    con.close();
   }
 
   public static void main(String[] args) throws Exception {

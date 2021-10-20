@@ -8,6 +8,7 @@ import com.eomcs.util.Prompt;
 public class BoardDetailHandler implements Command {
 
   BoardDao boardDao;
+
   public BoardDetailHandler(BoardDao boardDao) {
     this.boardDao = boardDao;
   }

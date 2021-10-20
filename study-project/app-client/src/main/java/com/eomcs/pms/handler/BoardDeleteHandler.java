@@ -7,6 +7,7 @@ import com.eomcs.util.Prompt;
 public class BoardDeleteHandler implements Command {
 
   BoardDao boardDao;
+
   public BoardDeleteHandler(BoardDao boardDao) {
     this.boardDao = boardDao;
   }
@@ -33,7 +34,9 @@ public class BoardDeleteHandler implements Command {
       System.out.println("게시글 삭제를 취소하였습니다.");
       return;
     }
+
     boardDao.delete(no);
+
     System.out.println("게시글을 삭제하였습니다.");
   }
 }
