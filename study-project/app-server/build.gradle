@@ -1,10 +1,12 @@
 
 // Gradle 도구에 추가할 작업이 있으면 플러그인을 장착하라
 plugins {
-    //id 'java' //자바 애플리케이션 빌드 관련 작업들을 추가한다.
-    id 'application' // 'java' 플러그인 + 애플리케이션 관련 작업 추가.
-    id 'java'
-    id 'eclipse' 
+    id 'java' //자바 애플리케이션 빌드 관련 작업들을 추가한다.
+    id 'eclipse-wtp' // 이클립스 IDE 용 웹 프로젝트 관련 파일을 만들 때 사용할 도구가 들어있는 플러그인 장착
+    id 'war' //웹 애플리케이션의 배포 파일을 만들 때 사용할 도구가 들어있는 플러그인 장착
+    //id 'application' // 'java' 플러그인 + 애플리케이션 관련 작업 추가.
+    //id 'java'
+    //id 'eclipse' 
     // eclipseProject : .project 파일 생성
     // eclipseClasspath : .classpath 파일 생성.
     // eclipse : = eclipseProject + eclipseClasspath
@@ -27,19 +29,25 @@ repositories {
     mavenCentral() // https://repo.maven.apache.org/maven2 에서 다운로드
 }
 
+// 서블릿 컨테이너에 배치할 때 사용할 웹 애플리케이션 이름을 설정한다.
+// 이 이름은 .war 배치 파일을 만들 때도 사용한다.
+war {
+  archiveBaseName = "pms"
+}
+
 // 프로젝트에서 사용하는 라이브러리 정보 등록
 // => Gradle을 실행할 때 위에서 설정한 서버에 접속하여 
 //    등록한 라이브러리를 자동으로 다운로드 받는다.
 // => 이렇게 다운로드 받은 라이브러리는 컴파일하거나 실행할 떄 자동으로 지정된다.
+tasks.withType(JavaCompile) {
+  options.encoding = 'UTF-8';
+}
+
 
 dependencies {
     testImplementation 'junit:junit:4.13.2'
     implementation 'com.google.guava:guava:30.1-jre'
     implementation 'com.google.code.gson:gson:2.8.8'
+    implementation 'javax.servlet:javax.servlet-api:4.0.1'
 }
 
-// 'application' 플러그인에서 run 작업을 수행할 때 사용할 클래스이름 지정.
-
-application {
-    mainClass = 'com.eomcs.pms.App'
-}
