@@ -37,6 +37,11 @@ public class MemberDetailHandler extends GenericServlet {
     out.println("<html>");
     out.println("<head>");
     out.println("  <title>회원상세</title>");
+    //    <style>
+    //      label {
+    //        width:100px;
+    //      }
+    //    </>
     out.println("</head>");
     out.println("<body>");
     out.println("<h1>회원 상세</h1>");
@@ -50,13 +55,13 @@ public class MemberDetailHandler extends GenericServlet {
         return;
       } else {
         out.println("<form action='update'>");
-        out.printf("변호: <input type='text' name='no' value='%d' readonly><br>\n", member.getNo());
-        out.printf("이름: <input type='text' name='name' value='%s'><br>\n", member.getName());
-        out.printf("이메일: <input type='text' name='email' value='%s'><br>\n", member.getEmail());
-        out.println("암호: <input type='text' name='password'><br>\n");
-        out.printf("사진: <input type='text' name='photo' value='%s'><br>\n", member.getPhoto());
-        out.printf("전화: <input type='text' name='tel' value='%s'><br>\n", member.getTel());
-        out.printf("등록일: %s<br>", member.getRegisteredDate());
+        out.printf("<label for='f-no'>변호</label> <input id='f-no' type='text' name='no' value='%d' readonly><br>\n", member.getNo());
+        out.printf("<label for='f-name'>이름</label> <input id='f-name' type='text' name='name' value='%s'><br>\n", member.getName());
+        out.printf("<label for='f-email'>이메일</label> <input id='f-email' type='text' name='email' value='%s'><br>\n", member.getEmail());
+        out.println("<label for='f-password'>암호</label> <input id='f-password' type='text' name='password'><br>\n");
+        out.printf("<label for='f-photo'>사진</label> <input id='f-photo' type='text' name='photo' value='%s'><br>\n", member.getPhoto());
+        out.printf("<label for='f-tel'>전화</label> <input id='f-tel' type='text' name='tel' value='%s'><br>\n", member.getTel());
+        out.printf("<label for='f-registeredDate'>등록일</label> <span id='f-registeredDate'>%s<br>", member.getRegisteredDate());
         out.println();
 
         out.println("<button>[변경]</button>");
