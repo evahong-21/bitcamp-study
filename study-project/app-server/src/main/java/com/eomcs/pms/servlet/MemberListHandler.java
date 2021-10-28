@@ -13,8 +13,9 @@ import javax.servlet.annotation.WebServlet;
 import com.eomcs.pms.dao.MemberDao;
 import com.eomcs.pms.domain.Member;
 
+
 @WebServlet("/member/list")
-public class MemberListHandler extends GenericServlet{
+public class MemberListHandler extends GenericServlet {
   private static final long serialVersionUID = 1L;
 
   MemberDao memberDao;
@@ -22,7 +23,7 @@ public class MemberListHandler extends GenericServlet{
   @Override
   public void init(ServletConfig config) throws ServletException {
     ServletContext 웹애플리케이션공용저장소 = config.getServletContext();
-    memberDao = (MemberDao)웹애플리케이션공용저장소.getAttribute("memberDao");
+    memberDao = (MemberDao) 웹애플리케이션공용저장소.getAttribute("memberDao");
   }
 
   @Override
@@ -32,12 +33,12 @@ public class MemberListHandler extends GenericServlet{
     response.setContentType("text/html;charset=UTF-8");
     PrintWriter out = response.getWriter();
 
+    out.println("<!DOCTYPE html>");
     out.println("<html>");
     out.println("<head>");
     out.println("  <title>회원목록</title>");
     out.println("</head>");
     out.println("<body>");
-
     out.println("<h1>회원 목록</h1>");
     out.println("<a href='form'>새회원</a><br>");
     out.println("<table border='1'>");
@@ -48,15 +49,20 @@ public class MemberListHandler extends GenericServlet{
     out.println("    <th>이메일</th>");
     out.println("    <th>전화</th>");
     out.println("    <th>등록일</th>");
-    out.println("  <tr>");
-    out.println("</thread>");
+    out.println("  </tr>");
+    out.println("</thead>");
     out.println("<tbody>");
-
     try {
       Collection<Member> memberList = memberDao.findAll();
 
       for (Member member : memberList) {
-        out.printf("<td>%d, <td><a href='detail?no=%1$d'>%s</a></td>, <td>%s</td>, <td>%s</td>, <td>%s</td></tr>", 
+        out.printf("<tr>"
+            + "<td>%d</td>"
+            + " <td><a href='detail?no=%1$d'>%s</a></td>"
+            + " <td>%s</td>"
+            + " <td>%s</td>"
+            + " <td>%s</td>"
+            + "</tr>\n", 
             member.getNo(), 
             member.getName(), 
             member.getEmail(), 
@@ -72,3 +78,10 @@ public class MemberListHandler extends GenericServlet{
     out.println("</html>");
   }
 }
+
+
+
+
+
+
+

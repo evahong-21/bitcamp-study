@@ -11,29 +11,32 @@ import javax.servlet.annotation.WebServlet;
 
 @WebServlet("/hi")
 public class HelloServlet implements Servlet {
-  @Override
-  public void destroy() {
 
+  @Override
+  public void init(ServletConfig config) throws ServletException {
   }
+
   @Override
   public ServletConfig getServletConfig() {
     return null;
   }
-  @Override
-  public String getServletInfo() {
-    return null;
-  }
-  @Override
-  public void init(ServletConfig config) throws ServletException {
 
-  }
   @Override
   public void service(ServletRequest req, ServletResponse res)
       throws ServletException, IOException {
     res.setContentType("text/plain;charset=UTF-8");
     PrintWriter out = res.getWriter();
-    out.println("Hello!");
     out.println("안녕!");
+    out.println("Hello!");
+  }
+
+  @Override
+  public String getServletInfo() {
+    return null;
+  }
+
+  @Override
+  public void destroy() {
   }
 
 }
