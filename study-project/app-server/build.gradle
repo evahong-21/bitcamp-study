@@ -48,9 +48,10 @@ dependencies {
     testImplementation 'junit:junit:4.13.2'
     implementation 'com.google.guava:guava:30.1-jre'
     implementation 'com.google.code.gson:gson:2.8.8'
-    implementation 'javax.servlet:javax.servlet-api:4.0.1'
+    providedCompile 'javax.servlet:javax.servlet-api:4.0.1'
     implementation 'org.mariadb.jdbc:mariadb-java-client:2.7.4'
     implementation 'org.mybatis:mybatis:3.5.7'
-    implementation 'javax.servlet.jsp:javax.servlet.jsp-api:2.3.3'
+    providedCompile 'javax.servlet.jsp:javax.servlet.jsp-api:2.3.3'
+    implementation 'javax.servlet:jstl:1.2'
 }
 
