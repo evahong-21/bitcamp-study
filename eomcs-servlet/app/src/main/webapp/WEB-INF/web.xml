@@ -82,20 +82,20 @@
 
 
 <!-- 서블릿 등록 -->
-<!--  
+  
   <servlet>
     <servlet-name>s01</servlet-name>
     <servlet-class>com.eomcs.web.ex01.Servlet01</servlet-class>
   </servlet>
--->
+
 
 <!-- 서블릿을 실행할 때 사용할 URL path를 설정 -->  
-<!--  
+  
   <servlet-mapping>
     <servlet-name>s01</servlet-name>
     <url-pattern>/ohora/haha</url-pattern>
   </servlet-mapping>
--->
+
 
 <!--    
   <servlet>

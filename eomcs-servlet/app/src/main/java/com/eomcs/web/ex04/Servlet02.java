@@ -19,7 +19,8 @@ public class Servlet02 extends GenericServlet {
       throws ServletException, IOException {
 
     // POST 요청
-    // - 웹 페이지의 폼(method='POST' 일 때)에서 전송 버튼을 클릭하면 POST 요청을 보낸다.
+    // - 웹 페이지의 폼(method='POST' 일 때)에서 전송 버튼을 클릭하면 POST 요청을 보낸
+    다.
     //
     // 테스트
     // - http://localhost:8080/web/ex04/test02.html 실행
